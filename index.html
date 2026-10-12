@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MathEnglish - Học Toán Tiếng Anh Toàn Diện</title>
+  <title>MathEnglish Pro - Học Toán Tiếng Anh Toàn Diện</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap');
     body { font-family: 'Quicksand', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
     
     .perspective-1000 {
       perspective: 1000px;
@@ -64,78 +65,129 @@
 
   <!-- Header -->
   <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-xl sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 bg-white text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg shadow-blue-900/20">
+        <div class="w-11 h-11 bg-white text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg shadow-blue-900/20">
           🧮
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-2xl font-black tracking-tight">MathEnglish</h1>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight">MathEnglish</h1>
             <span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 text-blue-100 px-2 py-0.5 rounded-full">Pro Plus</span>
           </div>
-          <p class="text-xs text-blue-100">Học Toán Tiếng Anh cho mọi lứa tuổi từ cơ bản đến nâng cao</p>
+          <p class="text-[11px] sm:text-xs text-blue-100">Học Toán Tiếng Anh chuẩn quốc tế & cá nhân hóa</p>
         </div>
       </div>
 
-      <nav class="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-        <button onclick="switchTab('vocab')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-bold transition bg-white/20 shadow-sm" id="btn-vocab">
+      <!-- Main Navigation Tabs -->
+      <nav class="flex flex-wrap gap-1 sm:gap-1.5 justify-center">
+        <button onclick="switchTab('vocab')" class="nav-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition bg-white/20 shadow-sm" id="btn-vocab">
           📚 Từ Vựng
         </button>
-        <button onclick="switchTab('flashcard')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-bold transition hover:bg-white/20" id="btn-flashcard">
+        <button onclick="switchTab('flashcard')" class="nav-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition hover:bg-white/20" id="btn-flashcard">
           🎴 Flashcard 3D
         </button>
-        <button onclick="switchTab('calc')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-bold transition hover:bg-white/20" id="btn-calc">
+        <button onclick="switchTab('calc')" class="nav-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition hover:bg-white/20" id="btn-calc">
           🔊 Bàn Tính Đọc Câu
         </button>
-        <button onclick="switchTab('problems')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-bold transition hover:bg-white/20" id="btn-problems">
+        <button onclick="switchTab('problems')" class="nav-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition hover:bg-white/20" id="btn-problems">
           📖 Bài Toán Đố
         </button>
-        <button onclick="switchTab('quiz')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-bold transition hover:bg-white/20" id="btn-quiz">
+        <button onclick="switchTab('quiz')" class="nav-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition hover:bg-white/20" id="btn-quiz">
           🎮 Thử Thách Quiz
+        </button>
+        <button onclick="switchTab('dashboard')" class="nav-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition hover:bg-white/20" id="btn-dashboard">
+          📊 Tiến Độ & Mục Tiêu
         </button>
       </nav>
     </div>
+
+    <!-- Voice Control Bar -->
+    <div class="bg-indigo-950/40 border-t border-white/10 px-4 py-2">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-amber-300 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-volume-high"></i> Giọng đọc & Tốc độ:
+          </span>
+          <select id="tts-voice-select" onchange="onVoiceChange()" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300 transition max-w-[180px] sm:max-w-[240px]">
+            <option value="default" class="text-slate-800">Tự động (Hệ thống)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center bg-white/10 rounded-lg p-0.5 border border-white/15">
+            <button onclick="setSpeechRate(0.75)" id="rate-0.75" class="rate-btn px-2 py-0.5 rounded text-[11px] font-bold transition hover:bg-white/20 text-white">0.75x Chậm</button>
+            <button onclick="setSpeechRate(1.0)" id="rate-1.0" class="rate-btn px-2 py-0.5 rounded text-[11px] font-bold transition bg-white text-indigo-900 shadow">1.0x Chuẩn</button>
+            <button onclick="setSpeechRate(1.25)" id="rate-1.25" class="rate-btn px-2 py-0.5 rounded text-[11px] font-bold transition hover:bg-white/20 text-white">1.25x Nhanh</button>
+          </div>
+          <button onclick="testSpeech()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-2.5 py-1 rounded-lg text-xs transition flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-play text-[10px]"></i> Nghe thử
+          </button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full">
+  <!-- Notification Banner for Daily Streak -->
+  <div id="streak-banner" class="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-b border-amber-200/60 px-4 py-2">
+    <div class="max-w-6xl mx-auto flex items-center justify-between text-xs text-amber-900">
+      <div class="flex items-center gap-2">
+        <span class="text-lg">🔥</span>
+        <span>Chuỗi học: <strong id="banner-streak-count" class="text-amber-800 text-sm">1 ngày</strong> liên tục! Mục tiêu hôm nay: <strong id="banner-goal-progress" class="text-amber-800">0/5 từ</strong></span>
+      </div>
+      <button onclick="switchTab('dashboard')" class="text-indigo-600 hover:text-indigo-800 font-bold underline flex items-center gap-1">
+        Xem chi tiết <i class="fa-solid fa-arrow-right text-[10px]"></i>
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
 
     <!-- ================= TAB 1: TỪ VỰNG THEO CHỦ ĐỀ ================= -->
     <section id="tab-vocab" class="space-y-6">
-      <!-- Tips Banner -->
-      <div class="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-l-4 border-indigo-600 p-4 rounded-r-2xl flex items-center justify-between gap-4">
-        <div class="flex items-start gap-3">
-          <span class="text-2xl">💡</span>
-          <div>
-            <h2 class="text-sm sm:text-base font-bold text-indigo-950">Bí kíp học Toán tiếng Anh hiệu quả:</h2>
-            <p class="text-xs sm:text-sm text-indigo-900">Bấm vào biểu tượng 🔊 cạnh mỗi từ để nghe phát âm bản xứ chuẩn xác. Hãy lặp lại to theo máy nhé!</p>
-          </div>
+      <!-- Search & Filters -->
+      <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div class="relative w-full md:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="vocab-search" oninput="handleVocabSearch()" placeholder="Tìm từ tiếng Anh, tiếng Việt, phiên âm..." class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
         </div>
-        <button onclick="speakText('Welcome to Math English learning platform!')" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow hover:bg-indigo-700 transition">
-          <i class="fa-solid fa-volume-high"></i> Thử giọng nói
-        </button>
+
+        <div class="flex items-center gap-2 flex-wrap justify-end w-full md:w-auto">
+          <button onclick="filterVocabStatus('all')" id="status-all" class="status-pill px-3 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white shadow-sm">
+            Tất cả (<span id="count-total">0</span>)
+          </button>
+          <button onclick="filterVocabStatus('learned')" id="status-learned" class="status-pill px-3 py-1.5 text-xs font-bold rounded-xl bg-white text-emerald-700 border border-emerald-200 hover:bg-emerald-50">
+            ✅ Đã thuộc (<span id="count-learned">0</span>)
+          </button>
+          <button onclick="filterVocabStatus('unlearned')" id="status-unlearned" class="status-pill px-3 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+            ⏳ Cần học (<span id="count-unlearned">0</span>)
+          </button>
+        </div>
       </div>
 
-      <!-- Categories Filter -->
+      <!-- Categories Filter Pills -->
       <div class="flex flex-wrap gap-2 items-center" id="vocab-categories">
         <span class="text-xs font-bold text-slate-500 mr-1 uppercase tracking-wider">Chủ đề:</span>
-        <button onclick="filterVocab('all')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white shadow-sm" data-cat="all">
+        <button onclick="filterVocabCategory('all')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white shadow-sm" data-cat="all">
           ✨ Tất cả (<span id="count-all">0</span>)
         </button>
-        <button onclick="filterVocab('operations')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="operations">
-          ➕ Phép tính cơ bản
+        <button onclick="filterVocabCategory('operations')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="operations">
+          ➕ Phép tính & Số học
         </button>
-        <button onclick="filterVocab('geometry')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="geometry">
-          📐 Hình học & Không gian
+        <button onclick="filterVocabCategory('geometry')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="geometry">
+          📐 Hình học 2D & 3D
         </button>
-        <button onclick="filterVocab('fractions')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="fractions">
-          🍕 Phân số & Tỉ lệ
+        <button onclick="filterVocabCategory('fractions')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="fractions">
+          🍕 Phân số & Đại số
         </button>
-        <button onclick="filterVocab('measurement')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="measurement">
-          ⚖️ Đo lường & Thời gian
+        <button onclick="filterVocabCategory('measurement')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="measurement">
+          ⚖️ Đo lường & Đại lượng
         </button>
-        <button onclick="filterVocab('keywords')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="keywords">
-          🔑 Dấu hiệu giải đề
+        <button onclick="filterVocabCategory('keywords')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="keywords">
+          🔑 Từ khóa giải đề
+        </button>
+        <button onclick="filterVocabCategory('advanced')" class="cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-cat="advanced">
+          🚀 Toán nâng cao & Logic
         </button>
       </div>
 
@@ -147,7 +199,20 @@
     <section id="tab-flashcard" class="hidden space-y-6">
       <div class="text-center max-w-xl mx-auto">
         <h2 class="text-2xl font-black text-slate-800">Thẻ Ghi Nhớ Flashcard 3D</h2>
-        <p class="text-sm text-slate-500 mt-1">Bấm vào thẻ để lật xem phiên âm và nghĩa tiếng Việt</p>
+        <p class="text-sm text-slate-500 mt-1">Lật thẻ để ôn nghĩa, phiên âm và lưu trạng thái đã thuộc vào thiết bị</p>
+      </div>
+
+      <!-- Filter Flashcards Mode -->
+      <div class="flex justify-center gap-2 flex-wrap">
+        <button onclick="setFlashcardMode('all')" id="fc-mode-all" class="fc-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">
+          Tất cả thẻ (<span id="fc-count-all">0</span>)
+        </button>
+        <button onclick="setFlashcardMode('unlearned')" id="fc-mode-unlearned" class="fc-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400">
+          Chỉ thẻ chưa thuộc (<span id="fc-count-unlearned">0</span>)
+        </button>
+        <button onclick="setFlashcardMode('weak')" id="fc-mode-weak" class="fc-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-rose-600 border border-rose-200 hover:bg-rose-50">
+          ⚠️ Từ hay sai cần ôn (<span id="fc-count-weak">0</span>)
+        </button>
       </div>
 
       <!-- Flashcard Container -->
@@ -162,10 +227,10 @@
         </div>
 
         <!-- 3D Card Box -->
-        <div class="perspective-1000 w-full h-80 cursor-pointer" onclick="flipCurrentCard()">
+        <div class="perspective-1000 w-full h-84 sm:h-96 cursor-pointer" onclick="flipCurrentCard()">
           <div id="flashcard-element" class="flip-card flip-card-inner w-full h-full shadow-2xl rounded-3xl">
             <!-- Mặt trước (Front) -->
-            <div class="flip-card-front bg-gradient-to-br from-white to-slate-50 border-2 border-indigo-100 p-8 flex flex-col items-center justify-between text-center shadow-lg">
+            <div class="flip-card-front bg-gradient-to-br from-white to-slate-50 border-2 border-indigo-100 p-7 flex flex-col items-center justify-between text-center shadow-lg">
               <div class="w-full flex items-center justify-between">
                 <span id="fc-badge-cat" class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700">Chủ đề</span>
                 <button onclick="event.stopPropagation(); speakText(getCurrentFcWord())" class="w-10 h-10 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 flex items-center justify-center transition" title="Nghe phát âm">
@@ -173,9 +238,9 @@
                 </button>
               </div>
 
-              <div class="my-auto">
+              <div class="my-auto py-2">
                 <div id="fc-icon" class="text-5xl mb-3">📐</div>
-                <h3 id="fc-en-word" class="text-3xl font-black text-slate-800 tracking-tight">Triangle</h3>
+                <h3 id="fc-en-word" class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">Triangle</h3>
                 <p id="fc-ipa-word" class="text-sm text-slate-400 font-mono mt-1">/ˈtraɪ.æŋ.ɡəl/</p>
               </div>
 
@@ -185,23 +250,23 @@
             </div>
 
             <!-- Mặt sau (Back) -->
-            <div class="flip-card-back bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 text-white p-8 flex flex-col items-center justify-between text-center shadow-lg">
+            <div class="flip-card-back bg-gradient-to-br from-indigo-950 via-indigo-900 to-purple-950 text-white p-7 flex flex-col items-center justify-between text-center shadow-lg">
               <div class="w-full flex items-center justify-between text-indigo-200 text-xs">
                 <span>Nghĩa tiếng Việt</span>
                 <span class="bg-white/10 px-2 py-0.5 rounded-full">Lật lại ↻</span>
               </div>
 
-              <div class="my-auto">
+              <div class="my-auto py-2">
                 <h4 id="fc-vi-word" class="text-2xl font-black text-amber-300 mb-2">Hình tam giác</h4>
                 <div class="inline-block bg-white/10 px-3 py-1 rounded-xl text-sm font-semibold mb-3">
                   🗣️ Đọc bồi: <span id="fc-boi-word" class="text-emerald-300 font-bold">Trai-eng-gồ</span>
                 </div>
-                <p id="fc-example" class="text-xs text-indigo-100 italic bg-white/5 p-3 rounded-xl border border-white/10">
+                <p id="fc-example" class="text-xs text-indigo-100 italic bg-white/5 p-3 rounded-xl border border-white/10 max-w-sm">
                   "A triangle has three sides and three angles."
                 </p>
               </div>
 
-              <button onclick="event.stopPropagation(); speakText(document.getElementById('fc-example').innerText)" class="text-xs font-bold text-indigo-200 hover:text-white flex items-center gap-1">
+              <button onclick="event.stopPropagation(); speakText(document.getElementById('fc-example').innerText)" class="text-xs font-bold text-indigo-200 hover:text-white flex items-center gap-1 bg-white/10 px-3 py-1.5 rounded-xl">
                 <i class="fa-solid fa-volume-high"></i> Nghe câu ví dụ
               </button>
             </div>
@@ -210,13 +275,13 @@
 
         <!-- Controls -->
         <div class="flex items-center justify-between mt-6 gap-3">
-          <button onclick="prevFlashcard()" class="flex-1 py-3 px-4 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm">
+          <button onclick="prevFlashcard()" class="flex-1 py-3 px-3 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm text-sm">
             <i class="fa-solid fa-arrow-left"></i> Thẻ trước
           </button>
-          <button onclick="markCardLearned()" id="btn-mark-learned" class="py-3 px-5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm">
+          <button onclick="markCardLearned()" id="btn-mark-learned" class="py-3 px-4 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm text-sm">
             <i class="fa-solid fa-check"></i> Đã thuộc
           </button>
-          <button onclick="nextFlashcard()" class="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20">
+          <button onclick="nextFlashcard()" class="flex-1 py-3 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 text-sm">
             Tiếp theo <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
@@ -229,79 +294,110 @@
       </div>
     </section>
 
-    <!-- ================= TAB 3: BÀN TÍNH LUYỆN NÓI TIẾNG ANH ================= -->
+    <!-- ================= TAB 3: BÀN TÍNH LUYỆN NÓI TIẾNG ANH (LOGIC ĐÃ SỬA) ================= -->
     <section id="tab-calc" class="hidden max-w-xl mx-auto">
       <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-100">
         <div class="text-center mb-6">
-          <h2 class="text-2xl font-black text-slate-800">Máy Tính Phát Âm Toàn Câu</h2>
-          <p class="text-sm text-slate-500 mt-1">Bấm các phím tính toán, máy tính sẽ dịch và đọc chuẩn câu tiếng Anh</p>
+          <h2 class="text-2xl font-black text-slate-800">Máy Tính Phát Âm Chuẩn Xác</h2>
+          <p class="text-sm text-slate-500 mt-1">Hỗ trợ số thập phân, chia chuẩn xác, đọc câu ngữ pháp tiếng Anh tự nhiên</p>
         </div>
 
+        <!-- Calculator Screen -->
         <div class="bg-slate-900 text-white p-5 rounded-2xl mb-6 shadow-inner text-right relative overflow-hidden">
-          <div class="absolute top-2 left-3 text-[10px] uppercase font-bold tracking-wider text-slate-500">Audio Calculator</div>
-          <div id="calc-expression" class="text-slate-400 text-sm h-6 font-mono">15 + 25 =</div>
-          <div id="calc-result" class="text-3xl font-mono font-bold tracking-wider text-amber-400">40</div>
-          <div id="calc-sentence" class="text-blue-300 text-sm mt-3 pt-3 border-t border-slate-800 text-left font-sans italic min-h-[24px]">
-            "Fifteen plus twenty-five equals forty"
+          <div class="flex items-center justify-between text-[11px] uppercase font-bold tracking-wider text-slate-400 mb-1">
+            <span>Audio Calculator</span>
+            <span id="calc-status-tag" class="text-emerald-400 font-mono">Ready</span>
+          </div>
+          <div id="calc-expression" class="text-slate-400 text-sm h-6 font-mono overflow-x-auto whitespace-nowrap"></div>
+          <div id="calc-result" class="text-3xl font-mono font-bold tracking-wider text-amber-400 truncate">0</div>
+          <div id="calc-sentence" class="text-blue-300 text-sm mt-3 pt-3 border-t border-slate-800 text-left font-sans italic min-h-[28px] break-words">
+            "Ready to calculate"
           </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-3">
-          <button onclick="calcClear()" class="p-4 bg-rose-50 text-rose-600 font-bold rounded-2xl hover:bg-rose-100 transition text-lg">C</button>
-          <button onclick="calcOp('/')" class="p-4 bg-indigo-50 text-indigo-700 font-bold rounded-2xl hover:bg-indigo-100 transition text-xl">÷</button>
-          <button onclick="calcOp('*')" class="p-4 bg-indigo-50 text-indigo-700 font-bold rounded-2xl hover:bg-indigo-100 transition text-xl">×</button>
-          <button onclick="calcSpeak()" class="p-4 bg-amber-50 text-amber-700 font-bold rounded-2xl hover:bg-amber-100 transition flex items-center justify-center gap-1.5" title="Đọc lại câu">
-            <i class="fa-solid fa-volume-high"></i> Đọc
+        <!-- Keypad -->
+        <div class="grid grid-cols-4 gap-2.5 sm:gap-3">
+          <button onclick="calcClear()" class="p-3.5 sm:p-4 bg-rose-50 hover:bg-rose-100 text-rose-600 font-black rounded-2xl transition text-base sm:text-lg shadow-sm" title="Xóa toàn bộ (Clear All)">
+            C
+          </button>
+          <button onclick="calcBackspace()" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm" title="Xóa ký tự cuối (Backspace)">
+            ⌫
+          </button>
+          <button onclick="calcOp('/')" class="p-3.5 sm:p-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black rounded-2xl transition text-xl shadow-sm" title="Chia (Divided by)">
+            ÷
+          </button>
+          <button onclick="calcOp('*')" class="p-3.5 sm:p-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black rounded-2xl transition text-xl shadow-sm" title="Nhân (Times)">
+            ×
           </button>
 
-          <button onclick="calcNum(7)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">7</button>
-          <button onclick="calcNum(8)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">8</button>
-          <button onclick="calcNum(9)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">9</button>
-          <button onclick="calcOp('-')" class="p-4 bg-indigo-50 text-indigo-700 font-bold rounded-2xl hover:bg-indigo-100 transition text-2xl font-mono">-</button>
+          <button onclick="calcNum('7')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">7</button>
+          <button onclick="calcNum('8')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">8</button>
+          <button onclick="calcNum('9')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">9</button>
+          <button onclick="calcOp('-')" class="p-3.5 sm:p-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black rounded-2xl transition text-2xl font-mono shadow-sm" title="Trừ (Minus)">
+            -
+          </button>
 
-          <button onclick="calcNum(4)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">4</button>
-          <button onclick="calcNum(5)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">5</button>
-          <button onclick="calcNum(6)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">6</button>
-          <button onclick="calcOp('+')" class="p-4 bg-indigo-50 text-indigo-700 font-bold rounded-2xl hover:bg-indigo-100 transition text-2xl font-mono">+</button>
+          <button onclick="calcNum('4')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">4</button>
+          <button onclick="calcNum('5')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">5</button>
+          <button onclick="calcNum('6')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">6</button>
+          <button onclick="calcOp('+')" class="p-3.5 sm:p-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black rounded-2xl transition text-2xl font-mono shadow-sm" title="Cộng (Plus)">
+            +
+          </button>
 
-          <button onclick="calcNum(1)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">1</button>
-          <button onclick="calcNum(2)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">2</button>
-          <button onclick="calcNum(3)" class="p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">3</button>
-          <button onclick="calcEqual()" class="row-span-2 p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-2xl hover:from-blue-700 hover:to-indigo-700 text-3xl flex items-center justify-center shadow-lg shadow-blue-500/30 transition">=</button>
+          <button onclick="calcNum('1')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">1</button>
+          <button onclick="calcNum('2')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">2</button>
+          <button onclick="calcNum('3')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">3</button>
+          <button onclick="calcEqual()" class="row-span-2 p-3.5 sm:p-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black rounded-2xl text-2xl sm:text-3xl flex items-center justify-center shadow-lg shadow-indigo-500/30 transition">
+            =
+          </button>
 
-          <button onclick="calcNum(0)" class="col-span-3 p-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition text-xl">0</button>
+          <button onclick="calcNum('0')" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition text-lg sm:text-xl shadow-sm">0</button>
+          <button onclick="calcDot()" class="p-3.5 sm:p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-black rounded-2xl transition text-xl shadow-sm" title="Dấu chấm thập phân">.</button>
+          <button onclick="calcSpeak()" class="p-3.5 sm:p-4 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold rounded-2xl transition flex items-center justify-center gap-1 shadow-sm text-sm" title="Đọc lại câu">
+            <i class="fa-solid fa-volume-high"></i> Đọc
+          </button>
+        </div>
+
+        <!-- Quick examples note -->
+        <div class="mt-5 p-3 rounded-2xl bg-slate-50 border border-slate-150 text-xs text-slate-600 flex items-center justify-between">
+          <span>💡 Ví dụ thử nghiệm: <strong>7 ÷ 2 = 3.5</strong> | <strong>10 ÷ 0 = Error</strong></span>
+          <span class="text-indigo-600 font-semibold">Tự động đọc chuẩn</span>
         </div>
       </div>
     </section>
 
-    <!-- ================= TAB 4: BÀI TOÁN ĐỐ MẪU CÓ LỜI GIẢI ================= -->
+    <!-- ================= TAB 4: BÀI TOÁN ĐỐ MỞ RỘNG (15 BÀI) ================= -->
     <section id="tab-problems" class="hidden space-y-6">
       <div class="text-center max-w-2xl mx-auto mb-2">
-        <h2 class="text-2xl font-black text-slate-800">Các Bài Toán Đố Tiếng Anh Thực Tế</h2>
-        <p class="text-sm text-slate-500 mt-1">Dịch nghĩa từng vế, phân tích từ khóa chỉ điểm và câu trả lời hoàn chỉnh</p>
+        <h2 class="text-2xl font-black text-slate-800">Kho Bài Toán Đố Tiếng Anh Thực Tế</h2>
+        <p class="text-sm text-slate-500 mt-1">Phân tích từ vựng chỉ điểm (Keywords), câu dịch và lời giải quốc tế hoàn chỉnh</p>
       </div>
 
       <!-- Problem level filters -->
-      <div class="flex justify-center gap-2 mb-4">
-        <button onclick="filterProblems('all')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white" data-type="all">Tất cả bài</button>
-        <button onclick="filterProblems('basic')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="basic">➕➖ Phép tính</button>
-        <button onclick="filterProblems('geometry')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="geometry">📐 Hình học</button>
-        <button onclick="filterProblems('fractions')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="fractions">🍕 Phân số & Đo lường</button>
+      <div class="flex justify-center gap-2 mb-4 flex-wrap">
+        <button onclick="filterProblems('all')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm" data-type="all">Tất cả (15 bài)</button>
+        <button onclick="filterProblems('basic')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="basic">➕➖ Cấp 1: Phép tính cơ bản</button>
+        <button onclick="filterProblems('geometry')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="geometry">📐 Cấp 2: Hình học & Thể tích</button>
+        <button onclick="filterProblems('fractions')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="fractions">🍕 Cấp 3: Phân số & Tỉ lệ %</button>
+        <button onclick="filterProblems('advanced')" class="prob-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400" data-type="advanced">🚀 Cấp 4: Vận tốc & Logic</button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="problems-container"></div>
     </section>
 
-    <!-- ================= TAB 5: TRẮC NGHIỆM THỬ THÁCH (QUIZ) ================= -->
+    <!-- ================= TAB 5: TRẮC NGHIỆM THỬ THÁCH (QUIZ 20 CÂU) ================= -->
     <section id="tab-quiz" class="hidden max-w-2xl mx-auto">
       <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-100">
         <!-- Header quiz -->
         <div class="flex items-center justify-between border-b pb-4 mb-6">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
-            <span class="text-xs sm:text-sm font-bold text-indigo-600 uppercase tracking-wider" id="quiz-progress">Câu hỏi 1 / 6</span>
+            <span class="text-xs sm:text-sm font-bold text-indigo-600 uppercase tracking-wider" id="quiz-progress">Câu hỏi 1 / 10</span>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full" id="quiz-accuracy-badge">
+              🎯 Độ chính xác: 100%
+            </span>
             <span class="text-xs sm:text-sm font-black bg-amber-100 text-amber-800 px-3 py-1 rounded-full shadow-sm" id="quiz-score">
               ⭐ Điểm: 0
             </span>
@@ -329,6 +425,125 @@
       </div>
     </section>
 
+    <!-- ================= TAB 6: TIẾN ĐỘ & CÁ NHÂN HÓA ================= -->
+    <section id="tab-dashboard" class="hidden space-y-6 max-w-4xl mx-auto">
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="text-2xl font-black text-slate-800">Hệ Thống Học Tập Cá Nhân Hóa</h2>
+        <p class="text-sm text-slate-500 mt-1">Dữ liệu được lưu trữ tự động trên trình duyệt của bạn (localStorage)</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Streak Card -->
+        <div class="bg-gradient-to-br from-amber-500 to-orange-500 text-white p-5 rounded-3xl shadow-lg shadow-orange-500/20 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs uppercase font-bold tracking-wider opacity-90">Chuỗi Ngày Học</span>
+            <span class="text-2xl">🔥</span>
+          </div>
+          <div class="my-3">
+            <div class="text-3xl font-black" id="dash-streak">1 ngày</div>
+            <p class="text-xs opacity-90 mt-0.5">Giữ vững phong độ hàng ngày!</p>
+          </div>
+        </div>
+
+        <!-- Mastered Words Card -->
+        <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-5 rounded-3xl shadow-lg shadow-teal-500/20 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs uppercase font-bold tracking-wider opacity-90">Từ Vựng Đã Thuộc</span>
+            <span class="text-2xl">📚</span>
+          </div>
+          <div class="my-3">
+            <div class="text-3xl font-black" id="dash-mastered">0 / 60</div>
+            <p class="text-xs opacity-90 mt-0.5" id="dash-mastered-pct">Đạt 0% tổng kho từ</p>
+          </div>
+        </div>
+
+        <!-- Quiz Accuracy Card -->
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-5 rounded-3xl shadow-lg shadow-indigo-500/20 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs uppercase font-bold tracking-wider opacity-90">Tỉ Lệ Đúng Quiz</span>
+            <span class="text-2xl">🎯</span>
+          </div>
+          <div class="my-3">
+            <div class="text-3xl font-black" id="dash-accuracy">0%</div>
+            <p class="text-xs opacity-90 mt-0.5" id="dash-quiz-counts">Đúng 0 / 0 câu đã làm</p>
+          </div>
+        </div>
+
+        <!-- Best Score Card -->
+        <div class="bg-gradient-to-br from-purple-600 to-pink-600 text-white p-5 rounded-3xl shadow-lg shadow-pink-500/20 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs uppercase font-bold tracking-wider opacity-90">Điểm Quiz Cao Nhất</span>
+            <span class="text-2xl">🏆</span>
+          </div>
+          <div class="my-3">
+            <div class="text-3xl font-black" id="dash-high-score">0 điểm</div>
+            <p class="text-xs opacity-90 mt-0.5">Kỷ lục thử thách bài làm</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Goal Setting & Progress -->
+      <div class="bg-white p-6 sm:p-7 rounded-3xl shadow-sm border border-slate-100">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-lg font-black text-slate-800">🎯 Mục Tiêu Học Mỗi Ngày</h3>
+            <p class="text-xs text-slate-500">Số lượng từ vựng cần đánh dấu thuộc mỗi ngày để hoàn thành mục tiêu</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500">Mục tiêu:</span>
+            <select id="goal-select" onchange="changeDailyGoalTarget(this.value)" class="bg-slate-50 border border-slate-200 text-indigo-700 font-bold rounded-xl px-3 py-1.5 text-xs focus:ring-2 focus:ring-indigo-400">
+              <option value="5">5 từ / ngày (Khởi động)</option>
+              <option value="10">10 từ / ngày (Tiêu chuẩn)</option>
+              <option value="15">15 từ / ngày (Chăm chỉ)</option>
+              <option value="20">20 từ / ngày (Siêu tốc)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold">
+            <span class="text-slate-600">Tiến độ hôm nay:</span>
+            <span class="text-indigo-600" id="goal-progress-text">0 / 5 từ</span>
+          </div>
+          <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+            <div id="goal-progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mistakes & Review Section -->
+      <div class="bg-white p-6 sm:p-7 rounded-3xl shadow-sm border border-slate-100">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-lg font-black text-slate-800">⚠️ Danh Sách Từ Thường Sai / Cần Ôn Tập</h3>
+              <span id="weak-count-badge" class="bg-rose-100 text-rose-700 text-xs font-bold px-2 py-0.5 rounded-full">0 khái niệm</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Tự động ghi nhận khi bạn chọn sai trong các bài Quiz trắc nghiệm</p>
+          </div>
+          <button onclick="reviewWeakWordsInFlashcards()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 self-start sm:self-auto">
+            <i class="fa-solid fa-bolt"></i> Ôn tập ngay trên Flashcard
+          </button>
+        </div>
+
+        <div id="weak-words-list" class="flex flex-wrap gap-2 pt-2">
+          <p class="text-xs text-slate-400 italic">Chưa có từ nào bị đánh dấu sai. Hãy làm Quiz để kiểm tra năng lực nhé!</p>
+        </div>
+      </div>
+
+      <!-- Reset & Data Control -->
+      <div class="p-5 rounded-3xl bg-slate-100/70 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div>
+          <strong class="text-slate-700 block text-sm">Quản Lý Dữ Liệu Học Tập</strong>
+          <span class="text-slate-500">Toàn bộ dữ liệu nằm trên thiết bị của bạn. Bạn có thể xóa và bắt đầu lại từ đầu bất cứ lúc nào.</span>
+        </div>
+        <button onclick="confirmResetProgress()" class="px-4 py-2 bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 font-bold rounded-xl transition shadow-sm flex items-center gap-1.5 flex-shrink-0">
+          <i class="fa-solid fa-trash-can"></i> Đặt lại toàn bộ tiến độ
+        </button>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
@@ -337,17 +552,652 @@
   </footer>
 
   <script>
-    // ================= ÂM THANH & PHÁT ÂM =================
+    // ================= DỮ LIỆU TỪ VỰNG MỞ RỘNG (60+ TỪ VỰNG CAO CẤP) =================
+    const allVocabData = [
+      // 1. Phép tính & Số học (Operations & Numbers)
+      { id: 1, category: 'operations', catName: 'Phép tính', sym: '➕', name: 'Addition / Plus', ipa: '/əˈdɪʃ.ən/ - /plʌs/', boi: 'Ớ-đít-sừn / P-lớt', vi: 'Phép cộng, cộng thêm', example: 'Five plus three equals eight.', bg: 'bg-emerald-50 text-emerald-700' },
+      { id: 2, category: 'operations', catName: 'Phép tính', sym: '➖', name: 'Subtraction / Minus', ipa: '/səbˈtræk.ʃən/ - /ˈmaɪ.nəs/', boi: 'Sắp-tréc-sừn / Mai-nớt', vi: 'Phép trừ, bớt đi', example: 'Ten minus four equals six.', bg: 'bg-rose-50 text-rose-700' },
+      { id: 3, category: 'operations', catName: 'Phép tính', sym: '✖️', name: 'Multiplication / Times', ipa: '/ˌmʌl.tɪ.plɪˈkeɪ.ʃən/', boi: 'Man-ti-pli-kê-sừn / Thaim-z', vi: 'Phép nhân, nhân lên', example: 'Three times four is twelve.', bg: 'bg-amber-50 text-amber-700' },
+      { id: 4, category: 'operations', catName: 'Phép tính', sym: '➗', name: 'Division / Divided by', ipa: '/dɪˈvɪʒ.ən/', boi: 'Đi-vi-dừn / Đi-vai-địt bai', vi: 'Phép chia cho', example: 'Eight divided by two equals four.', bg: 'bg-indigo-50 text-indigo-700' },
+      { id: 5, category: 'operations', catName: 'Phép tính', sym: '🟰', name: 'Equals', ipa: '/ˈiː.kwəlz/', boi: 'Í-quờ-z', vi: 'Bằng, kết quả là', example: 'Two plus two equals four.', bg: 'bg-blue-50 text-blue-700' },
+      { id: 6, category: 'operations', catName: 'Phép tính', sym: '🔢', name: 'Even number', ipa: '/ˈiː.vən ˈnʌm.bər/', boi: 'Í-vừn năm-bờ', vi: 'Số chẵn (chia hết cho 2)', example: 'Eight is an even number.', bg: 'bg-emerald-50 text-emerald-700' },
+      { id: 7, category: 'operations', catName: 'Phép tính', sym: '🔟', name: 'Odd number', ipa: '/ɒd ˈnʌm.bər/', boi: 'Ót năm-bờ', vi: 'Số lẻ (không chia hết cho 2)', example: 'Nine is an odd number.', bg: 'bg-orange-50 text-orange-700' },
+      { id: 8, category: 'operations', catName: 'Phép tính', sym: '💎', name: 'Prime number', ipa: '/praɪm ˈnʌm.bər/', boi: 'P-raim năm-bờ', vi: 'Số nguyên tố (chỉ chia hết cho 1 và chính nó)', example: 'Seven is a prime number.', bg: 'bg-purple-50 text-purple-700' },
+      { id: 9, category: 'operations', catName: 'Phép tính', sym: '🎯', name: 'Remainder', ipa: '/rɪˈmeɪn.dər/', boi: 'Ri-mên-đờ', vi: 'Số dư trong phép chia', example: 'Seven divided by two is three remainder one.', bg: 'bg-rose-50 text-rose-700' },
+      { id: 10, category: 'operations', catName: 'Phép tính', sym: '⚡', name: 'Exponent / Power', ipa: '/ɪkˈspəʊ.nənt/', boi: 'Ích-pô-nừnt / Pao-ờ', vi: 'Số mũ, lũy thừa', example: 'Five to the power of two is twenty-five.', bg: 'bg-cyan-50 text-cyan-700' },
+
+      // 2. Hình học 2D & 3D (Geometry)
+      { id: 11, category: 'geometry', catName: 'Hình học', sym: '🔺', name: 'Triangle', ipa: '/ˈtraɪ.æŋ.ɡəl/', boi: 'Trai-eng-gồ', vi: 'Hình tam giác (3 cạnh)', example: 'A triangle has three angles.', bg: 'bg-orange-50 text-orange-700' },
+      { id: 12, category: 'geometry', catName: 'Hình học', sym: '🟩', name: 'Square', ipa: '/skweər/', boi: 'S-que-ờ', vi: 'Hình vuông (4 cạnh bằng nhau)', example: 'All four sides of a square are equal.', bg: 'bg-teal-50 text-teal-700' },
+      { id: 13, category: 'geometry', catName: 'Hình học', sym: '▭', name: 'Rectangle', ipa: '/ˈrek.tæŋ.ɡəl/', boi: 'Rếch-teng-gồ', vi: 'Hình chữ nhật', example: 'A rectangle has opposite sides equal.', bg: 'bg-sky-50 text-sky-700' },
+      { id: 14, category: 'geometry', catName: 'Hình học', sym: '⚪', name: 'Circle', ipa: '/ˈsɜː.kəl/', boi: 'Sơ-cồ', vi: 'Hình tròn', example: 'A circle has no corners.', bg: 'bg-purple-50 text-purple-700' },
+      { id: 15, category: 'geometry', catName: 'Hình học', sym: '🥚', name: 'Oval / Ellipse', ipa: '/ˈəʊ.vəl/', boi: 'Âu-vồ', vi: 'Hình bầu dục, elip', example: 'An egg has an oval shape.', bg: 'bg-amber-50 text-amber-700' },
+      { id: 16, category: 'geometry', catName: 'Hình học', sym: '🎲', name: 'Cube', ipa: '/kjuːb/', boi: 'Kiu-b', vi: 'Hình lập phương', example: 'A playing die is a cube.', bg: 'bg-indigo-50 text-indigo-700' },
+      { id: 17, category: 'geometry', catName: 'Hình học', sym: '🥫', name: 'Cylinder', ipa: '/ˈsɪl.ɪn.dər/', boi: 'Xi-lin-đờ', vi: 'Hình trụ tròn', example: 'A can of soda is a cylinder.', bg: 'bg-lime-50 text-lime-800' },
+      { id: 18, category: 'geometry', catName: 'Hình học', sym: '🔮', name: 'Sphere', ipa: '/sfɪər/', boi: 'S-fia', vi: 'Hình cầu', example: 'The Earth is shaped like a sphere.', bg: 'bg-blue-50 text-blue-700' },
+      { id: 19, category: 'geometry', catName: 'Hình học', sym: '📏', name: 'Perimeter', ipa: '/pəˈrɪm.ɪ.tər/', boi: 'Pơ-rim-mi-tờ', vi: 'Chu vi (tổng độ dài viền ngoài)', example: 'Add all sides to find the perimeter.', bg: 'bg-violet-50 text-violet-700' },
+      { id: 20, category: 'geometry', catName: 'Hình học', sym: '🗺️', name: 'Area', ipa: '/ˈeə.ri.ə/', boi: 'E-ri-ờ', vi: 'Diện tích (độ lớn bề mặt)', example: 'The area of the square is 25 square meters.', bg: 'bg-pink-50 text-pink-700' },
+      { id: 21, category: 'geometry', catName: 'Hình học', sym: '📦', name: 'Volume', ipa: '/ˈvɒl.juːm/', boi: 'Vol-lium', vi: 'Thể tích (sức chứa không gian)', example: 'The volume of the box is forty cubic meters.', bg: 'bg-teal-50 text-teal-700' },
+      { id: 22, category: 'geometry', catName: 'Hình học', sym: '📐', name: 'Angle', ipa: '/ˈæŋ.ɡəl/', boi: 'Eng-gồ', vi: 'Góc (đo bằng độ °)', example: 'A right angle is ninety degrees.', bg: 'bg-cyan-50 text-cyan-700' },
+
+      // 3. Phân số, Tỉ lệ & Đại số (Fractions & Algebra)
+      { id: 23, category: 'fractions', catName: 'Phân số', sym: '½', name: 'One half', ipa: '/wʌn hɑːf/', boi: 'Oăn hap', vi: 'Một nửa (1/2)', example: 'She ate one half of the pizza.', bg: 'bg-emerald-50 text-emerald-700' },
+      { id: 24, category: 'fractions', catName: 'Phân số', sym: '¼', name: 'One quarter', ipa: '/wʌn ˈkwɔː.tər/', boi: 'Oăn quót-tờ', vi: 'Một phần tư (1/4)', example: 'A quarter of the class is absent.', bg: 'bg-yellow-50 text-yellow-800' },
+      { id: 25, category: 'fractions', catName: 'Phân số', sym: '⅓', name: 'One third', ipa: '/wʌn θɜːd/', boi: 'Oăn thớt-đ', vi: 'Một phần ba (1/3)', example: 'One third of twelve is four.', bg: 'bg-lime-50 text-lime-800' },
+      { id: 26, category: 'fractions', catName: 'Phân số', sym: '🔢', name: 'Fraction', ipa: '/ˈfræk.ʃən/', boi: 'Fréc-sừn', vi: 'Phân số (tử số / mẫu số)', example: 'Three fourths is a fraction.', bg: 'bg-indigo-50 text-indigo-700' },
+      { id: 27, category: 'fractions', catName: 'Phân số', sym: '⬆️', name: 'Numerator', ipa: '/ˈnjuː.mə.reɪ.tər/', boi: 'Niu-mơ-rê-tờ', vi: 'Tử số (số ở phía trên)', example: 'In three fourths, three is the numerator.', bg: 'bg-blue-50 text-blue-700' },
+      { id: 28, category: 'fractions', catName: 'Phân số', sym: '⬇️', name: 'Denominator', ipa: '/dɪˈnɒm.ɪ.neɪ.tər/', boi: 'Đi-nóm-mi-nê-tờ', vi: 'Mẫu số (số ở phía dưới)', example: 'The denominator cannot be zero.', bg: 'bg-rose-50 text-rose-700' },
+      { id: 29, category: 'fractions', catName: 'Phân số', sym: '％', name: 'Percentage / Percent', ipa: '/pəˈsen.tɪdʒ/', boi: 'Pơ-sen-tịt-ch', vi: 'Phần trăm (%)', example: 'Fifty percent means half.', bg: 'bg-purple-50 text-purple-700' },
+      { id: 30, category: 'fractions', catName: 'Phân số', sym: '⚖️', name: 'Ratio', ipa: '/ˈreɪ.ʃi.əʊ/', boi: 'Rây-si-âu', vi: 'Tỉ số, tỉ lệ giữa hai số', example: 'The ratio of boys to girls is two to three.', bg: 'bg-amber-50 text-amber-700' },
+      { id: 31, category: 'fractions', catName: 'Phân số', sym: '🔤', name: 'Variable', ipa: '/ˈveə.ri.ə.bəl/', boi: 'Ve-ri-ơ-bồ', vi: 'Biến số (chữ cái đại diện giá trị x, y)', example: 'Solve for the variable x.', bg: 'bg-sky-50 text-sky-700' },
+      { id: 32, category: 'fractions', catName: 'Phân số', sym: '📝', name: 'Equation', ipa: '/ɪˈkweɪ.ʒən/', boi: 'I-quê-dừn', vi: 'Phương trình, biểu thức cân bằng', example: 'Solve the equation two x plus five equals nine.', bg: 'bg-indigo-50 text-indigo-700' },
+
+      // 4. Đo lường & Đại lượng (Measurement)
+      { id: 33, category: 'measurement', catName: 'Đo lường', sym: '📏', name: 'Length', ipa: '/leŋθ/', boi: 'Leng-th', vi: 'Chiều dài, độ dài', example: 'What is the length of this desk?', bg: 'bg-blue-50 text-blue-700' },
+      { id: 34, category: 'measurement', catName: 'Đo lường', sym: '↔️', name: 'Width', ipa: '/wɪtθ/', boi: 'Uýt-th', vi: 'Chiều rộng', example: 'Measure the width of the table.', bg: 'bg-cyan-50 text-cyan-700' },
+      { id: 35, category: 'measurement', catName: 'Đo lường', sym: '↕️', name: 'Height', ipa: '/haɪt/', boi: 'Hai-t', vi: 'Chiều cao', example: 'The height of the tree is eight meters.', bg: 'bg-emerald-50 text-emerald-700' },
+      { id: 36, category: 'measurement', catName: 'Đo lường', sym: '⚖️', name: 'Weight / Mass', ipa: '/weɪt/ - /mæs/', boi: 'Uêi-t / Mát-s', vi: 'Khối lượng, trọng lượng', example: 'The weight of the box is five kilograms.', bg: 'bg-amber-50 text-amber-700' },
+      { id: 37, category: 'measurement', catName: 'Đo lường', sym: '🧴', name: 'Capacity', ipa: '/kəˈpæs.ə.ti/', boi: 'Kờ-pát-sơ-ti', vi: 'Dung tích chứa nước/chất lỏng', example: 'The bottle has a capacity of two liters.', bg: 'bg-teal-50 text-teal-700' },
+      { id: 38, category: 'measurement', catName: 'Đo lường', sym: '🌡️', name: 'Temperature', ipa: '/ˈtem.prə.tʃər/', boi: 'Them-prơ-chờ', vi: 'Nhiệt độ (độ C, độ F)', example: 'Water boils at one hundred degrees Celsius.', bg: 'bg-rose-50 text-rose-700' },
+      { id: 39, category: 'measurement', catName: 'Đo lường', sym: '⏱️', name: 'Minute & Second', ipa: '/ˈmɪn.ɪt/ - /ˈsek.ənd/', boi: 'Mi-nịt - Sé-cừn', vi: 'Phút và Giây', example: 'One minute has sixty seconds.', bg: 'bg-violet-50 text-violet-700' },
+      { id: 40, category: 'measurement', catName: 'Đo lường', sym: '🚗', name: 'Kilometer', ipa: '/kɪˈlɒm.ɪ.tər/', boi: 'Ki-lom-mi-tờ', vi: 'Kilômet (1000 mét)', example: 'We drove ten kilometers.', bg: 'bg-blue-50 text-blue-700' },
+      { id: 41, category: 'measurement', catName: 'Đo lường', sym: '🥩', name: 'Gram & Kilogram', ipa: '/ɡræm/ - /ˈkɪl.ə.ɡræm/', boi: 'Gram - Ki-lô-gram', vi: 'Gam và Kilôgam', example: 'One kilogram equals one thousand grams.', bg: 'bg-orange-50 text-orange-700' },
+      { id: 42, category: 'measurement', catName: 'Đo lường', sym: '🪙', name: 'Currency / Cost', ipa: '/ˈkʌr.ən.si/', boi: 'Cơ-rừn-si / Cót-st', vi: 'Tiền tệ, chi phí', example: 'What is the total cost of the book?', bg: 'bg-emerald-50 text-emerald-700' },
+
+      // 5. Từ khóa giải toán (Problem Solving Keywords)
+      { id: 43, category: 'keywords', catName: 'Từ khóa', sym: '📦', name: 'In total / Altogether', ipa: '/ɪn ˈtəʊ.təl/', boi: 'In thô-tồ', vi: 'Tổng cộng (Dấu hiệu: Cộng +)', example: 'How many pens in total?', bg: 'bg-emerald-50 text-emerald-700' },
+      { id: 44, category: 'keywords', catName: 'Từ khóa', sym: '🍂', name: 'Left / Remaining', ipa: '/left/ - /rɪˈmeɪ.nɪŋ/', boi: 'Lép-t / Ri-mê-ninh', vi: 'Còn lại (Dấu hiệu: Trừ -)', example: 'How many apples are left?', bg: 'bg-rose-50 text-rose-700' },
+      { id: 45, category: 'keywords', catName: 'Từ khóa', sym: '📈', name: 'More than', ipa: '/mɔːr ðæn/', boi: 'Mo đan', vi: 'Nhiều hơn', example: 'Alex has 3 more marbles than John.', bg: 'bg-sky-50 text-sky-700' },
+      { id: 46, category: 'keywords', catName: 'Từ khóa', sym: '📉', name: 'Fewer than / Less than', ipa: '/ˈfjuː.ər ðæn/', boi: 'Fiu-ờ đan', vi: 'Ít hơn', example: 'He has 2 fewer candies.', bg: 'bg-orange-50 text-orange-700' },
+      { id: 47, category: 'keywords', catName: 'Từ khóa', sym: '🍰', name: 'Share equally', ipa: '/ʃeər ˈiː.kwə.li/', boi: 'Se-ờ í-quờ-li', vi: 'Chia đều cho mỗi người (Dấu hiệu: Chia ÷)', example: 'Share 10 candies equally to 2 kids.', bg: 'bg-indigo-50 text-indigo-700' },
+      { id: 48, category: 'keywords', catName: 'Từ khóa', sym: '➖', name: 'Difference', ipa: '/ˈdɪf.ər.əns/', boi: 'Đíp-phơ-rừn-s', vi: 'Hiệu số giữa hai giá trị', example: 'Find the difference between ten and four.', bg: 'bg-rose-50 text-rose-700' },
+      { id: 49, category: 'keywords', catName: 'Từ khóa', sym: '✖️', name: 'Product', ipa: '/ˈprɒd.ʌkt/', boi: 'Pró-đắc-t', vi: 'Tích số của phép nhân', example: 'The product of three and five is fifteen.', bg: 'bg-amber-50 text-amber-700' },
+      { id: 50, category: 'keywords', catName: 'Từ khóa', sym: '➗', name: 'Quotient', ipa: '/ˈkwəʊ.ʃənt/', boi: 'Quơ-sừnt', vi: 'Thương số của phép chia', example: 'The quotient of eight and two is four.', bg: 'bg-teal-50 text-teal-700' },
+      { id: 51, category: 'keywords', catName: 'Từ khóa', sym: '✌️', name: 'Twice / Double', ipa: '/twaɪs/ - /ˈdʌb.əl/', boi: 'Tuai-s / Đắp-bồ', vi: 'Gấp hai lần, gấp đôi (x2)', example: 'Twice of five is ten.', bg: 'bg-purple-50 text-purple-700' },
+      { id: 52, category: 'keywords', catName: 'Từ khóa', sym: '📊', name: 'Average / Mean', ipa: '/ˈæv.ər.ɪdʒ/', boi: 'E-vờ-rịt-ch', vi: 'Giá trị trung bình cộng', example: 'Calculate the average score of three tests.', bg: 'bg-blue-50 text-blue-700' },
+
+      // 6. Toán nâng cao & Tư duy Logic (Advanced Math & Logic)
+      { id: 53, category: 'advanced', catName: 'Toán nâng cao', sym: '🎲', name: 'Probability', ipa: '/ˌprɒb.əˈbɪl.ə.ti/', boi: 'Pro-bơ-bi-lơ-ti', vi: 'Xác suất, khả năng xảy ra', example: 'The probability of rolling a six is one in six.', bg: 'bg-purple-50 text-purple-700' },
+      { id: 54, category: 'advanced', catName: 'Toán nâng cao', sym: '🔄', name: 'Pattern / Sequence', ipa: '/ˈpæt.ən/ - /ˈsiː.kwəns/', boi: 'Pét-từn / Xí-quừn-s', vi: 'Quy luật, dãy số theo thứ tự', example: 'Find the next number in the pattern.', bg: 'bg-indigo-50 text-indigo-700' },
+      { id: 55, category: 'advanced', catName: 'Toán nâng cao', sym: '📈', name: 'Coordinate', ipa: '/kəʊˈɔː.dɪ.nət/', boi: 'Cầu-oóc-đi-nợt', vi: 'Tọa độ điểm (x, y) trên đồ thị', example: 'Plot the coordinate three four.', bg: 'bg-blue-50 text-blue-700' },
+      { id: 56, category: 'advanced', catName: 'Toán nâng cao', sym: '⏸️', name: 'Parallel lines', ipa: '/ˈpær.ə.lel laɪnz/', boi: 'Pa-rờ-leo lain-z', vi: 'Các đường thẳng song song (không bao giờ cắt)', example: 'Parallel lines never meet.', bg: 'bg-cyan-50 text-cyan-700' },
+      { id: 57, category: 'advanced', catName: 'Toán nâng cao', sym: '➕', name: 'Perpendicular', ipa: '/ˌpɜː.pənˈdɪk.jʊ.lər/', boi: 'Pơ-pừn-đích-kiu-lờ', vi: 'Vuông góc (tạo góc 90 độ)', example: 'The two lines are perpendicular.', bg: 'bg-teal-50 text-teal-700' },
+      { id: 58, category: 'advanced', catName: 'Toán nâng cao', sym: '🏎️', name: 'Speed / Velocity', ipa: '/spiːd/ - /vəˈlɒs.ə.ti/', boi: 'S-pi-đ / Vơ-ló-sơ-ti', vi: 'Vận tốc (Quãng đường / Thời gian)', example: 'Speed equals distance divided by time.', bg: 'bg-rose-50 text-rose-700' },
+      { id: 59, category: 'advanced', catName: 'Toán nâng cao', sym: '🏷️', name: 'Discount', ipa: '/ˈdɪs.kaʊnt/', boi: 'Đít-s-cao-nt', vi: 'Giảm giá, chiết khấu (%)', example: 'Get a twenty percent discount on this book.', bg: 'bg-emerald-50 text-emerald-700' },
+      { id: 60, category: 'advanced', catName: 'Toán nâng cao', sym: '💰', name: 'Profit & Loss', ipa: '/ˈprɒf.ɪt/ - /lɒs/', boi: 'Pró-phịt - Lót-s', vi: 'Lợi nhuận và Thua lỗ', example: 'Selling above cost results in a profit.', bg: 'bg-amber-50 text-amber-700' }
+    ];
+
+    // ================= KHO BÀI TOÁN ĐỐ MỞ RỘNG (15 BÀI TẬP ĐA CẤP ĐỘ) =================
+    const problemsData = [
+      // Basic
+      {
+        id: 1,
+        type: "basic",
+        title: "Bài 1: Phép cộng (Addition)",
+        en: "Anna has 3 apples. Tom gives her 2 more apples. How many apples does Anna have altogether?",
+        vi: "Anna có 3 quả táo. Tom cho cô ấy thêm 2 quả nữa. Hỏi Anna có tất cả bao nhiêu quả táo?",
+        keyword: "altogether (tất cả lại) ➔ Phép cộng (+)",
+        calc: "3 + 2 = 5",
+        answer: "Anna has 5 apples."
+      },
+      {
+        id: 2,
+        type: "basic",
+        title: "Bài 2: Phép trừ (Subtraction)",
+        en: "There are 10 birds on a tree. 4 birds fly away. How many birds are left?",
+        vi: "Có 10 con chim trên cây. 4 con bay đi mất. Hỏi còn lại bao nhiêu con chim?",
+        keyword: "left / fly away (còn lại / bay đi) ➔ Phép trừ (-)",
+        calc: "10 - 4 = 6",
+        answer: "There are 6 birds left."
+      },
+      {
+        id: 3,
+        type: "basic",
+        title: "Bài 3: So sánh hơn (More than)",
+        en: "David has 7 toy cars. Lucas has 4 more toy cars than David. How many toy cars does Lucas have?",
+        vi: "David có 7 chiếc ô tô đồ chơi. Lucas có nhiều hơn David 4 chiếc. Hỏi Lucas có bao nhiêu chiếc?",
+        keyword: "more than (nhiều hơn) ➔ Lấy 7 + 4",
+        calc: "7 + 4 = 11",
+        answer: "Lucas has 11 toy cars."
+      },
+      {
+        id: 4,
+        type: "basic",
+        title: "Bài 4: Mua sắm & Tiền thừa (Change)",
+        en: "A notebook costs 3 dollars. Emma pays with a 10 dollar bill. How much change does she receive?",
+        vi: "Một cuốn vở giá 3 đô la. Emma trả bằng tờ 10 đô la. Hỏi cô ấy nhận lại bao nhiêu tiền thừa?",
+        keyword: "change (tiền thối lại) ➔ Phép trừ: 10 - 3",
+        calc: "10 - 3 = 7 dollars",
+        answer: "She receives 7 dollars in change."
+      },
+      // Geometry
+      {
+        id: 5,
+        type: "geometry",
+        title: "Bài 5: Chu vi hình vuông (Perimeter of a square)",
+        en: "A square has a side length of 5 cm. What is the perimeter of the square?",
+        vi: "Một hình vuông có cạnh dài 5 cm. Chu vi của hình vuông đó là bao nhiêu?",
+        keyword: "Perimeter = side × 4 ➔ Chu vi = cạnh × 4",
+        calc: "5 × 4 = 20 cm",
+        answer: "The perimeter is 20 centimeters."
+      },
+      {
+        id: 6,
+        type: "geometry",
+        title: "Bài 6: Diện tích hình chữ nhật (Area of a rectangle)",
+        en: "A rectangle has a length of 6 meters and a width of 3 meters. Find its area.",
+        vi: "Một hình chữ nhật có chiều dài 6 mét và chiều rộng 3 mét. Hãy tính diện tích.",
+        keyword: "Area = length × width ➔ Diện tích = dài × rộng",
+        calc: "6 × 3 = 18 m²",
+        answer: "The area is 18 square meters."
+      },
+      {
+        id: 7,
+        type: "geometry",
+        title: "Bài 7: Thể tích khối lập phương (Volume of a cube)",
+        en: "Each edge of a cube is 3 cm. What is the volume of the cube?",
+        vi: "Mỗi cạnh của hình lập phương dài 3 cm. Thể tích của hình lập phương là bao nhiêu?",
+        keyword: "Volume of cube = edge × edge × edge ➔ Cạnh × cạnh × cạnh",
+        calc: "3 × 3 × 3 = 27 cm³",
+        answer: "The volume is 27 cubic centimeters."
+      },
+      {
+        id: 8,
+        type: "geometry",
+        title: "Bài 8: Chu vi hình chữ nhật (Perimeter of a rectangle)",
+        en: "A garden has a length of 8 meters and a width of 4 meters. Calculate its perimeter.",
+        vi: "Một khu vườn có chiều dài 8m và chiều rộng 4m. Hãy tính chu vi của nó.",
+        keyword: "Perimeter = (length + width) × 2 ➔ (Dài + Rộng) × 2",
+        calc: "(8 + 4) × 2 = 24 meters",
+        answer: "The perimeter is 24 meters."
+      },
+      // Fractions & Percent
+      {
+        id: 9,
+        type: "fractions",
+        title: "Bài 9: Phân số chiếc bánh (Fraction of pizza)",
+        en: "A pizza has 8 slices. John eats one quarter of the pizza. How many slices does he eat?",
+        vi: "Một chiếc bánh pizza có 8 miếng. John ăn một phần tư chiếc bánh. Hỏi anh ấy ăn mấy miếng?",
+        keyword: "one quarter (1/4) ➔ Lấy 8 chia cho 4",
+        calc: "8 ÷ 4 = 2",
+        answer: "John eats 2 slices."
+      },
+      {
+        id: 10,
+        type: "fractions",
+        title: "Bài 10: Chia đều dung tích (Equal Sharing)",
+        en: "A water tank contains 15 liters. It is poured equally into 3 jugs. How many liters in each jug?",
+        vi: "Bình chứa 15 lít nước. Đổ đều vào 3 cái ca. Hỏi mỗi ca có bao nhiêu lít nước?",
+        keyword: "poured equally (chia đều) ➔ Phép chia: 15 ÷ 3",
+        calc: "15 ÷ 3 = 5 liters",
+        answer: "Each jug contains 5 liters."
+      },
+      {
+        id: 11,
+        type: "fractions",
+        title: "Bài 11: Tính phần trăm giảm giá (Discount percentage)",
+        en: "A shirt originally costs 40 dollars. Today it has a 25 percent discount. How much money do you save?",
+        vi: "Một chiếc áo có giá gốc 40 đô. Hôm nay giảm giá 25%. Hỏi bạn tiết kiệm được bao nhiêu tiền?",
+        keyword: "25% means one quarter (1/4) ➔ 40 × 0.25",
+        calc: "40 × 25% = 10 dollars",
+        answer: "You save 10 dollars."
+      },
+      // Advanced & Logic
+      {
+        id: 12,
+        type: "advanced",
+        title: "Bài 12: Vận tốc, Quãng đường & Thời gian (Speed & Distance)",
+        en: "A train travels at a speed of 60 kilometers per hour. How far does it travel in 3 hours?",
+        vi: "Một đoàn tàu di chuyển với vận tốc 60 km/h. Hỏi tàu đi được bao xa trong 3 giờ?",
+        keyword: "Distance = Speed × Time ➔ Quãng đường = Vận tốc × Thời gian",
+        calc: "60 × 3 = 180 km",
+        answer: "The train travels 180 kilometers."
+      },
+      {
+        id: 13,
+        type: "advanced",
+        title: "Bài 13: Trung bình cộng (Average / Mean)",
+        en: "A student scores 8, 9, and 10 in three math quizzes. What is the average score?",
+        vi: "Một học sinh đạt điểm 8, 9 và 10 trong 3 bài kiểm tra toán. Điểm trung bình là bao nhiêu?",
+        keyword: "Average = (Sum of scores) ÷ 3 ➔ (8 + 9 + 10) ÷ 3",
+        calc: "(8 + 9 + 10) ÷ 3 = 9",
+        answer: "The average score is 9."
+      },
+      {
+        id: 14,
+        type: "advanced",
+        title: "Bài 14: Xác suất gieo xúc xắc (Probability)",
+        en: "A standard six-sided die is rolled once. What is the probability of getting an even number?",
+        vi: "Một con xúc xắc 6 mặt được gieo một lần. Xác suất để nhận được một số chẵn là bao nhiêu?",
+        keyword: "Even numbers are 2, 4, 6 (3 outcomes out of 6) ➔ 3/6 = 1/2",
+        calc: "3 ÷ 6 = 1/2 (50%)",
+        answer: "The probability is 1/2 or 50%."
+      },
+      {
+        id: 15,
+        type: "advanced",
+        title: "Bài 15: Tìm số hạng dãy quy luật (Sequence Pattern)",
+        en: "Look at the pattern: 2, 5, 8, 11, ... What is the next number?",
+        vi: "Quan sát dãy số: 2, 5, 8, 11, ... Số tiếp theo là số nào?",
+        keyword: "Rule: Add 3 each time (Quy luật: cộng thêm 3)",
+        calc: "11 + 3 = 14",
+        answer: "The next number is 14."
+      }
+    ];
+
+    // ================= KHO BỘ CÂU HỎI TRẮC NGHIỆM (20 CÂU HỎI TOÁN TIẾNG ANH) =================
+    const allQuizQuestions = [
+      {
+        id: 1,
+        topic: "Addition",
+        en: "Minh has 5 books. He buys 2 more books. How many books does he have altogether?",
+        vi: "Minh có 5 quyển sách. Bạn ấy mua thêm 2 quyển nữa. Hỏi bạn ấy có tất cả bao nhiêu quyển sách?",
+        options: [
+          { text: "5 - 2 = 3 books", correct: false, explain: "Sai rồi. Từ 'altogether' (tất cả gộp lại) là dấu hiệu của phép cộng (+)." },
+          { text: "5 + 2 = 7 books", correct: true, explain: "Chính xác! 'altogether' nghĩa là cộng lại: 5 + 2 = 7." },
+          { text: "5 × 2 = 10 books", correct: false, explain: "Sai rồi. Mua thêm 2 quyển chứ không phải nhân đôi." }
+        ]
+      },
+      {
+        id: 2,
+        topic: "Perimeter",
+        en: "A square has four sides. Each side is 6 cm. What is the perimeter?",
+        vi: "Một hình vuông có 4 cạnh. Mỗi cạnh dài 6 cm. Chu vi của hình vuông là bao nhiêu?",
+        options: [
+          { text: "6 + 4 = 10 cm", correct: false, explain: "Sai rồi. Chu vi hình vuông bằng độ dài 1 cạnh nhân 4." },
+          { text: "6 × 4 = 24 cm", correct: true, explain: "Xuất sắc! Perimeter = side × 4 = 6 × 4 = 24 cm." },
+          { text: "6 × 6 = 36 cm", correct: false, explain: "36 cm² là diện tích (Area), còn chu vi (Perimeter) là 24 cm." }
+        ]
+      },
+      {
+        id: 3,
+        topic: "Subtraction",
+        en: "There are 12 cars in the parking lot. 5 cars leave. How many cars remain?",
+        vi: "Có 12 chiếc ô tô trong bãi đỗ xe. 5 chiếc rời đi. Hỏi còn lại bao nhiêu chiếc ô tô?",
+        options: [
+          { text: "12 + 5 = 17 cars", correct: false, explain: "Sai rồi. Xe rời đi thì số lượng phải bớt đi (-)." },
+          { text: "12 - 5 = 7 cars", correct: true, explain: "Rất giỏi! 'Remain' (còn lại) chính là phép trừ: 12 - 5 = 7." },
+          { text: "12 ÷ 5 = 2 cars", correct: false, explain: "Sai rồi, đây không phải bài toán chia đều." }
+        ]
+      },
+      {
+        id: 4,
+        topic: "Fractions",
+        en: "What is 'one half' of 20?",
+        vi: "Một nửa (1/2) của số 20 là bao nhiêu?",
+        options: [
+          { text: "10", correct: true, explain: "Chính xác! 'One half' là 1/2, lấy 20 chia cho 2 bằng 10." },
+          { text: "5", correct: false, explain: "Sai rồi. 5 là một phần tư (one quarter) của 20." },
+          { text: "40", correct: false, explain: "Sai rồi. 40 là gấp đôi (double) số 20." }
+        ]
+      },
+      {
+        id: 5,
+        topic: "Geometry",
+        en: "How many sides does a triangle have?",
+        vi: "Hình tam giác có bao nhiêu cạnh?",
+        options: [
+          { text: "Four sides", correct: false, explain: "Sai rồi. 4 cạnh là hình vuông hoặc chữ nhật." },
+          { text: "Three sides", correct: true, explain: "Chính xác! 'Triangle' (tri = 3) có đúng 3 cạnh và 3 góc." },
+          { text: "Zero sides", correct: false, explain: "Hình tròn mới không có góc cạnh." }
+        ]
+      },
+      {
+        id: 6,
+        topic: "Division",
+        en: "Mom shares 15 candies equally among 3 children. How many candies does each child get?",
+        vi: "Mẹ chia đều 15 cái kẹo cho 3 đứa trẻ. Hỏi mỗi bạn nhận được bao nhiêu cái?",
+        options: [
+          { text: "15 - 3 = 12 candies", correct: false, explain: "Chia đều cơ mà, không phải trừ đi đâu nhé!" },
+          { text: "15 ÷ 3 = 5 candies", correct: true, explain: "Tuyệt đỉnh! 'shares equally' (chia đều) ➔ 15 ÷ 3 = 5 cái kẹo." },
+          { text: "15 × 3 = 45 candies", correct: false, explain: "Sai rồi, chia cho từng người thì số kẹo mỗi người phải ít đi." }
+        ]
+      },
+      {
+        id: 7,
+        topic: "Multiplication",
+        en: "There are 4 boxes. Each box contains 6 pencils. How many pencils are there in total?",
+        vi: "Có 4 chiếc hộp. Mỗi hộp chứa 6 chiếc bút chì. Hỏi có tất cả bao nhiêu chiếc bút chì?",
+        options: [
+          { text: "4 + 6 = 10 pencils", correct: false, explain: "Sai rồi. Có 4 nhóm, mỗi nhóm 6 cái ➔ dùng phép nhân." },
+          { text: "4 × 6 = 24 pencils", correct: true, explain: "Chính xác! Phép nhân: 4 × 6 = 24 chiếc bút chì." },
+          { text: "6 ÷ 4 = 1.5 pencils", correct: false, explain: "Sai rồi, không phải phép chia." }
+        ]
+      },
+      {
+        id: 8,
+        topic: "Even and Odd",
+        en: "Which of the following numbers is an 'odd number'?",
+        vi: "Số nào dưới đây là 'số lẻ' (odd number)?",
+        options: [
+          { text: "14", correct: false, explain: "14 chia hết cho 2 nên 14 là số chẵn (even number)." },
+          { text: "21", correct: true, explain: "Đúng rồi! 21 tận cùng là 1, không chia hết cho 2 ➔ odd number." },
+          { text: "30", correct: false, explain: "30 tận cùng là 0, là số chẵn." }
+        ]
+      },
+      {
+        id: 9,
+        topic: "Area",
+        en: "A rectangle has a length of 7 cm and a width of 4 cm. What is its area?",
+        vi: "Hình chữ nhật có chiều dài 7 cm và chiều rộng 4 cm. Diện tích của nó là bao nhiêu?",
+        options: [
+          { text: "(7 + 4) × 2 = 22 cm", correct: false, explain: "22 cm là chu vi (Perimeter), không phải diện tích." },
+          { text: "7 × 4 = 28 cm²", correct: true, explain: "Tuyệt vời! Area = length × width = 7 × 4 = 28 cm²." },
+          { text: "7 - 4 = 3 cm²", correct: false, explain: "Sai công thức tính diện tích." }
+        ]
+      },
+      {
+        id: 10,
+        topic: "Measurement",
+        en: "How many grams are there in one kilogram (1 kg)?",
+        vi: "Có bao nhiêu gam trong một kilôgam (1 kg)?",
+        options: [
+          { text: "100 grams", correct: false, explain: "Chưa đúng. 'Kilo' nghĩa là một nghìn (1000)." },
+          { text: "1,000 grams", correct: true, explain: "Chính xác! 1 kg = 1,000 g." },
+          { text: "10,000 grams", correct: false, explain: "Quá nhiều rồi! Chỉ có 1,000 gam thôi." }
+        ]
+      },
+      {
+        id: 11,
+        topic: "Percentage",
+        en: "What is 50% of 80?",
+        vi: "50% của 80 là bao nhiêu?",
+        options: [
+          { text: "20", correct: false, explain: "20 là 25% của 80." },
+          { text: "40", correct: true, explain: "Đúng rồi! 50% là một nửa, 80 ÷ 2 = 40." },
+          { text: "60", correct: false, explain: "Sai rồi. 60 là 75% của 80." }
+        ]
+      },
+      {
+        id: 12,
+        topic: "Prime Number",
+        en: "Which number is a 'prime number'?",
+        vi: "Số nào sau đây là 'số nguyên tố'?",
+        options: [
+          { text: "9", correct: false, explain: "9 chia hết cho 1, 3 và 9 nên không phải số nguyên tố." },
+          { text: "11", correct: true, explain: "Rất chuẩn! 11 chỉ chia hết cho 1 và chính nó ➔ Prime number." },
+          { text: "15", correct: false, explain: "15 chia hết cho 1, 3, 5, 15 nên là hợp số." }
+        ]
+      },
+      {
+        id: 13,
+        topic: "Speed",
+        en: "A car drives 120 km in 2 hours. What is its average speed?",
+        vi: "Một xe ô tô chạy 120 km trong 2 giờ. Vận tốc trung bình là bao nhiêu?",
+        options: [
+          { text: "120 × 2 = 240 km/h", correct: false, explain: "Vận tốc bằng quãng đường chia cho thời gian." },
+          { text: "120 ÷ 2 = 60 km/h", correct: true, explain: "Chính xác! Speed = Distance ÷ Time = 120 ÷ 2 = 60 km/h." },
+          { text: "120 - 2 = 118 km/h", correct: false, explain: "Sai công thức." }
+        ]
+      },
+      {
+        id: 14,
+        topic: "Fractions",
+        en: "In the fraction 3/5, what is the 'denominator'?",
+        vi: "Trong phân số 3/5, số nào là mẫu số (denominator)?",
+        options: [
+          { text: "3", correct: false, explain: "3 là số ở trên ➔ Numerator (Tử số)." },
+          { text: "5", correct: true, explain: "Chính xác! 5 là số ở dưới ➔ Denominator (Mẫu số)." },
+          { text: "8", correct: false, explain: "Không có số 8 trong phân số này." }
+        ]
+      },
+      {
+        id: 15,
+        topic: "Angles",
+        en: "What is the measure of a 'right angle'?",
+        vi: "Số đo của một 'góc vuông' (right angle) là bao nhiêu độ?",
+        options: [
+          { text: "45 degrees", correct: false, explain: "45 độ là góc nhọn (acute angle)." },
+          { text: "90 degrees", correct: true, explain: "Xuất sắc! Right angle luôn luôn bằng đúng 90 độ." },
+          { text: "180 degrees", correct: false, explain: "180 độ là góc bẹt (straight angle)." }
+        ]
+      }
+    ];
+
+    // ================= QUẢN LÝ TIẾN ĐỘ LÂU DÀI (LOCALSTORAGE MANAGER) =================
+    const STORAGE_KEYS = {
+      MASTERED: 'matheng_mastered_words_v1',
+      STATS: 'matheng_stats_v1',
+      GOAL: 'matheng_goal_v1',
+      STREAK: 'matheng_streak_v1',
+      WEAK: 'matheng_weak_topics_v1',
+      TTS: 'matheng_tts_settings_v1'
+    };
+
+    let userProgress = {
+      masteredWords: new Set(),
+      weakTopics: new Set(),
+      totalAnswered: 0,
+      totalCorrect: 0,
+      highestScore: 0,
+      dailyTarget: 5,
+      todayLearnedCount: 0,
+      streak: 1,
+      lastActiveDate: new Date().toISOString().split('T')[0]
+    };
+
+    function loadUserProgress() {
+      try {
+        // Mastered words
+        const savedMastered = localStorage.getItem(STORAGE_KEYS.MASTERED);
+        if (savedMastered) {
+          userProgress.masteredWords = new Set(JSON.parse(savedMastered));
+        }
+
+        // Weak topics
+        const savedWeak = localStorage.getItem(STORAGE_KEYS.WEAK);
+        if (savedWeak) {
+          userProgress.weakTopics = new Set(JSON.parse(savedWeak));
+        }
+
+        // Stats
+        const savedStats = localStorage.getItem(STORAGE_KEYS.STATS);
+        if (savedStats) {
+          const stats = JSON.parse(savedStats);
+          userProgress.totalAnswered = stats.totalAnswered || 0;
+          userProgress.totalCorrect = stats.totalCorrect || 0;
+          userProgress.highestScore = stats.highestScore || 0;
+        }
+
+        // Daily Goal
+        const savedGoal = localStorage.getItem(STORAGE_KEYS.GOAL);
+        const todayStr = new Date().toISOString().split('T')[0];
+        if (savedGoal) {
+          const goal = JSON.parse(savedGoal);
+          userProgress.dailyTarget = goal.target || 5;
+          if (goal.date === todayStr) {
+            userProgress.todayLearnedCount = goal.todayLearnedCount || 0;
+          } else {
+            userProgress.todayLearnedCount = 0;
+          }
+        }
+
+        // Streak
+        const savedStreak = localStorage.getItem(STORAGE_KEYS.STREAK);
+        if (savedStreak) {
+          const streakData = JSON.parse(savedStreak);
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+          if (streakData.lastActiveDate === todayStr) {
+            userProgress.streak = streakData.streak || 1;
+          } else if (streakData.lastActiveDate === yesterdayStr) {
+            userProgress.streak = streakData.streak || 1;
+          } else {
+            // Gap day, reset streak to 1
+            userProgress.streak = 1;
+          }
+          userProgress.lastActiveDate = streakData.lastActiveDate;
+        } else {
+          // Initialize streak today
+          saveStreakData();
+        }
+      } catch (e) {
+        console.error("Lỗi đọc localStorage:", e);
+      }
+    }
+
+    function saveMasteredWords() {
+      localStorage.setItem(STORAGE_KEYS.MASTERED, JSON.stringify([...userProgress.masteredWords]));
+      saveGoalData();
+      updateDashboardUI();
+      updateVocabCounters();
+    }
+
+    function saveStatsData() {
+      localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify({
+        totalAnswered: userProgress.totalAnswered,
+        totalCorrect: userProgress.totalCorrect,
+        highestScore: userProgress.highestScore
+      }));
+      updateDashboardUI();
+    }
+
+    function saveGoalData() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      localStorage.setItem(STORAGE_KEYS.GOAL, JSON.stringify({
+        target: userProgress.dailyTarget,
+        todayLearnedCount: userProgress.todayLearnedCount,
+        date: todayStr
+      }));
+    }
+
+    function saveStreakData() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      localStorage.setItem(STORAGE_KEYS.STREAK, JSON.stringify({
+        streak: userProgress.streak,
+        lastActiveDate: todayStr
+      }));
+    }
+
+    function saveWeakTopics() {
+      localStorage.setItem(STORAGE_KEYS.WEAK, JSON.stringify([...userProgress.weakTopics]));
+      updateDashboardUI();
+    }
+
+    function confirmResetProgress() {
+      if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ tiến độ học tập? (Từ vựng đã thuộc, điểm quiz và thống kê sẽ được làm mới)")) {
+        localStorage.removeItem(STORAGE_KEYS.MASTERED);
+        localStorage.removeItem(STORAGE_KEYS.STATS);
+        localStorage.removeItem(STORAGE_KEYS.GOAL);
+        localStorage.removeItem(STORAGE_KEYS.STREAK);
+        localStorage.removeItem(STORAGE_KEYS.WEAK);
+        userProgress.masteredWords.clear();
+        userProgress.weakTopics.clear();
+        userProgress.totalAnswered = 0;
+        userProgress.totalCorrect = 0;
+        userProgress.highestScore = 0;
+        userProgress.todayLearnedCount = 0;
+        userProgress.streak = 1;
+        
+        renderVocabGrid();
+        initFlashcards();
+        updateDashboardUI();
+        updateVocabCounters();
+        alert("Đã làm mới toàn bộ dữ liệu thành công!");
+      }
+    }
+
+    // ================= KIỂM SOÁT PHÁT ÂM (TTS CONTROLLER) =================
+    let availableVoices = [];
+    let selectedVoice = null;
+    let currentSpeechRate = 1.0;
+
+    function initSpeechSynthesis() {
+      if (!('speechSynthesis' in window)) return;
+
+      const loadVoices = () => {
+        const allVoices = window.speechSynthesis.getVoices();
+        // Lọc các giọng tiếng Anh
+        availableVoices = allVoices.filter(v => v.lang.startsWith('en'));
+        if (availableVoices.length === 0) availableVoices = allVoices;
+
+        const select = document.getElementById('tts-voice-select');
+        select.innerHTML = '<option value="default">🌐 Tự động (Hệ thống)</option>';
+
+        availableVoices.forEach((v, idx) => {
+          const opt = document.createElement('option');
+          opt.value = idx;
+          opt.className = 'text-slate-800';
+          const isUS = v.lang.includes('US') ? ' [US Mỹ]' : (v.lang.includes('GB') ? ' [UK Anh]' : '');
+          opt.text = `${v.name}${isUS} (${v.lang})`;
+          select.appendChild(opt);
+        });
+
+        // Load saved settings
+        const savedTTS = localStorage.getItem(STORAGE_KEYS.TTS);
+        if (savedTTS) {
+          try {
+            const config = JSON.parse(savedTTS);
+            currentSpeechRate = config.rate || 1.0;
+            setSpeechRate(currentSpeechRate, false);
+
+            if (config.voiceURI) {
+              const matchedIdx = availableVoices.findIndex(v => v.voiceURI === config.voiceURI);
+              if (matchedIdx !== -1) {
+                select.value = matchedIdx;
+                selectedVoice = availableVoices[matchedIdx];
+              }
+            }
+          } catch(e) {}
+        }
+      };
+
+      loadVoices();
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+      }
+    }
+
+    function onVoiceChange() {
+      const select = document.getElementById('tts-voice-select');
+      if (select.value === 'default') {
+        selectedVoice = null;
+      } else {
+        selectedVoice = availableVoices[parseInt(select.value, 10)] || null;
+      }
+      saveTTSConfig();
+    }
+
+    function setSpeechRate(rate, save = true) {
+      currentSpeechRate = rate;
+      ['0.75', '1.0', '1.25'].forEach(r => {
+        const btn = document.getElementById(`rate-${r}`);
+        if (parseFloat(r) === rate) {
+          btn.className = "rate-btn px-2 py-0.5 rounded text-[11px] font-bold transition bg-white text-indigo-900 shadow";
+        } else {
+          btn.className = "rate-btn px-2 py-0.5 rounded text-[11px] font-bold transition hover:bg-white/20 text-white";
+        }
+      });
+      if (save) saveTTSConfig();
+    }
+
+    function saveTTSConfig() {
+      localStorage.setItem(STORAGE_KEYS.TTS, JSON.stringify({
+        voiceURI: selectedVoice ? selectedVoice.voiceURI : '',
+        rate: currentSpeechRate
+      }));
+    }
+
     function speakText(text) {
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
+        window.speechSynthesis.cancel(); // Ngắt câu trước
+        if (!text || text.trim() === '') return;
+
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9;
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        } else {
+          utterance.lang = 'en-US';
+        }
+        utterance.rate = currentSpeechRate || 1.0;
         window.speechSynthesis.speak(utterance);
-      } else {
-        alert("Trình duyệt không hỗ trợ phát âm!");
       }
+    }
+
+    function testSpeech() {
+      speakText("Hello! You are learning math and English with MathEnglish Pro.");
     }
 
     function playSuccessSound() {
@@ -358,9 +1208,9 @@
         osc.type = 'triangle';
         osc.connect(gain);
         gain.connect(ctx.destination);
-        osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-        osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
-        osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // G5
+        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+        osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2);
         gain.gain.setValueAtTime(0.2, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
         osc.start();
@@ -387,11 +1237,7 @@
 
     function triggerConfetti() {
       if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
+        confetti({ particleCount: 75, spread: 70, origin: { y: 0.6 } });
       }
     }
 
@@ -399,148 +1245,431 @@
       if (typeof confetti === 'function') {
         const end = Date.now() + 2 * 1000;
         const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
-
         (function frame() {
-          confetti({
-            particleCount: 5,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-            colors: colors
-          });
-          confetti({
-            particleCount: 5,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-            colors: colors
-          });
-          if (Date.now() < end) {
-            requestAnimationFrame(frame);
-          }
+          confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+          confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+          if (Date.now() < end) requestAnimationFrame(frame);
         }());
       }
     }
 
-    // ================= CHUYỂN TAB =================
+    // ================= CHUYỂN TAB CHÍNH =================
     function switchTab(tabId) {
-      ['vocab', 'flashcard', 'calc', 'problems', 'quiz'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.add('hidden');
+      ['vocab', 'flashcard', 'calc', 'problems', 'quiz', 'dashboard'].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.classList.add('hidden');
         const btn = document.getElementById(`btn-${t}`);
-        btn.classList.remove('bg-white/20', 'shadow-sm');
+        if (btn) btn.classList.remove('bg-white/20', 'shadow-sm');
       });
-      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-      document.getElementById(`btn-${tabId}`).classList.add('bg-white/20', 'shadow-sm');
+      const activeTab = document.getElementById(`tab-${tabId}`);
+      if (activeTab) activeTab.classList.remove('hidden');
+      const activeBtn = document.getElementById(`btn-${tabId}`);
+      if (activeBtn) activeBtn.classList.add('bg-white/20', 'shadow-sm');
+
+      if (tabId === 'dashboard') updateDashboardUI();
     }
 
-    // ================= DỮ LIỆU TỪ VỰNG MỞ RỘNG =================
-    const allVocabData = [
-      // 1. Phép tính cơ bản
-      { category: 'operations', catName: 'Phép tính', sym: '➕', name: 'Addition / Plus', ipa: '/əˈdɪʃ.ən/ - /plʌs/', boi: 'Ớ-đít-sừn / P-lớt', vi: 'Phép cộng, cộng thêm', example: 'Five plus three equals eight.', bg: 'bg-emerald-50 text-emerald-700' },
-      { category: 'operations', catName: 'Phép tính', sym: '➖', name: 'Subtraction / Minus', ipa: '/səbˈtræk.ʃən/ - /ˈmaɪ.nəs/', boi: 'Sắp-tréc-sừn / Mai-nớt', vi: 'Phép trừ, bớt đi', example: 'Ten minus four equals six.', bg: 'bg-rose-50 text-rose-700' },
-      { category: 'operations', catName: 'Phép tính', sym: '✖️', name: 'Multiplication / Times', ipa: '/ˌmʌl.tɪ.plɪˈkeɪ.ʃən/', boi: 'Man-ti-pli-kê-sừn / Thaim-z', vi: 'Phép nhân, nhân lên', example: 'Three times four is twelve.', bg: 'bg-amber-50 text-amber-700' },
-      { category: 'operations', catName: 'Phép tính', sym: '➗', name: 'Division / Divided by', ipa: '/dɪˈvɪʒ.ən/', boi: 'Đi-vi-dừn / Đi-vai-địt bai', vi: 'Phép chia cho', example: 'Eight divided by two equals four.', bg: 'bg-indigo-50 text-indigo-700' },
-      { category: 'operations', catName: 'Phép tính', sym: '🟰', name: 'Equals', ipa: '/ˈiː.kwəlz/', boi: 'Í-quờ-z', vi: 'Bằng, kết quả là', example: 'Two plus two equals four.', bg: 'bg-blue-50 text-blue-700' },
+    // ================= BÀN TÍNH NÓI TIẾNG ANH (LOGIC ĐƯỢC SỬA HOÀN TOÀN) =================
+    let calcVal1 = null;
+    let calcVal2 = null;
+    let calcCurrentOp = null;
+    let calcInputStr = "0";
+    let calcLastSentence = "";
+    let calcJustEvaluated = false;
 
-      // 2. Hình học & Không gian
-      { category: 'geometry', catName: 'Hình học', sym: '🔺', name: 'Triangle', ipa: '/ˈtraɪ.æŋ.ɡəl/', boi: 'Trai-eng-gồ', vi: 'Hình tam giác (3 cạnh)', example: 'A triangle has three angles.', bg: 'bg-orange-50 text-orange-700' },
-      { category: 'geometry', catName: 'Hình học', sym: '🟩', name: 'Square', ipa: '/skweər/', boi: 'S-que-ờ', vi: 'Hình vuông (4 cạnh bằng nhau)', example: 'All four sides of a square are equal.', bg: 'bg-teal-50 text-teal-700' },
-      { category: 'geometry', catName: 'Hình học', sym: '▭', name: 'Rectangle', ipa: '/ˈrek.tæŋ.ɡəl/', boi: 'Rếch-teng-gồ', vi: 'Hình chữ nhật', example: 'A rectangle has opposite sides equal.', bg: 'bg-sky-50 text-sky-700' },
-      { category: 'geometry', catName: 'Hình học', sym: '⚪', name: 'Circle', ipa: '/ˈsɜː.kəl/', boi: 'Sơ-cồ', vi: 'Hình tròn', example: 'A circle has no corners.', bg: 'bg-purple-50 text-purple-700' },
-      { category: 'geometry', catName: 'Hình học', sym: '📏', name: 'Perimeter', ipa: '/pəˈrɪm.ɪ.tər/', boi: 'Pơ-rim-mi-tờ', vi: 'Chu vi (tổng độ dài viền ngoài)', example: 'Add all sides to find the perimeter.', bg: 'bg-violet-50 text-violet-700' },
-      { category: 'geometry', catName: 'Hình học', sym: '🗺️', name: 'Area', ipa: '/ˈeə.ri.ə/', boi: 'E-ri-ờ', vi: 'Diện tích (độ lớn bề mặt)', example: 'The area of the square is 25 square meters.', bg: 'bg-pink-50 text-pink-700' },
-      { category: 'geometry', catName: 'Hình học', sym: '📐', name: 'Angle', ipa: '/ˈæŋ.ɡəl/', boi: 'Eng-gồ', vi: 'Góc (đo bằng độ °)', example: 'A right angle is ninety degrees.', bg: 'bg-cyan-50 text-cyan-700' },
+    const onesWords = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+      'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    const tensWords = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
-      // 3. Phân số & Tỉ lệ
-      { category: 'fractions', catName: 'Phân số', sym: '½', name: 'One half', ipa: '/wʌn hɑːf/', boi: 'Oăn hap', vi: 'Một nửa (1/2)', example: 'She ate one half of the pizza.', bg: 'bg-emerald-50 text-emerald-700' },
-      { category: 'fractions', catName: 'Phân số', sym: '¼', name: 'One quarter', ipa: '/wʌn ˈkwɔː.tər/', boi: 'Oăn quót-tờ', vi: 'Một phần tư (1/4)', example: 'A quarter of the class is absent.', bg: 'bg-yellow-50 text-yellow-800' },
-      { category: 'fractions', catName: 'Phân số', sym: '⅓', name: 'One third', ipa: '/wʌn θɜːd/', boi: 'Oăn thớt-đ', vi: 'Một phần ba (1/3)', example: 'One third of twelve is four.', bg: 'bg-lime-50 text-lime-800' },
-      { category: 'fractions', catName: 'Phân số', sym: '🔢', name: 'Fraction', ipa: '/ˈfræk.ʃən/', boi: 'Fréc-sừn', vi: 'Phân số (tử số / mẫu số)', example: 'Three fourths is a fraction.', bg: 'bg-indigo-50 text-indigo-700' },
-      { category: 'fractions', catName: 'Phân số', sym: '％', name: 'Percentage / Percent', ipa: '/pəˈsen.tɪdʒ/', boi: 'Pơ-sen-tịt-ch', vi: 'Phần trăm (%)', example: 'Fifty percent means half.', bg: 'bg-purple-50 text-purple-700' },
+    function digitToWord(d) {
+      const dw = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+      return dw[parseInt(d, 10)] !== undefined ? dw[parseInt(d, 10)] : d;
+    }
 
-      // 4. Đo lường & Thời gian
-      { category: 'measurement', catName: 'Đo lường', sym: '📏', name: 'Length', ipa: '/leŋθ/', boi: 'Leng-th', vi: 'Chiều dài, độ dài', example: 'What is the length of this desk?', bg: 'bg-blue-50 text-blue-700' },
-      { category: 'measurement', catName: 'Đo lường', sym: '⚖️', name: 'Weight', ipa: '/weɪt/', boi: 'Uêi-t', vi: 'Cân nặng, trọng lượng', example: 'The weight of the box is five kilograms.', bg: 'bg-amber-50 text-amber-700' },
-      { category: 'measurement', catName: 'Đo lường', sym: '🧴', name: 'Volume / Capacity', ipa: '/ˈvɒl.juːm/', boi: 'Vol-lium', vi: 'Thể tích, dung tích (lít)', example: 'The bottle has a volume of two liters.', bg: 'bg-teal-50 text-teal-700' },
-      { category: 'measurement', catName: 'Đo lường', sym: '⏱️', name: 'Minute & Second', ipa: '/ˈmɪn.ɪt/ - /ˈsek.ənd/', boi: 'Mi-nịt - Sé-cừn', vi: 'Phút và Giây', example: 'One minute has sixty seconds.', bg: 'bg-rose-50 text-rose-700' },
+    function numToEn(n) {
+      if (isNaN(n)) return 'error';
+      if (!isFinite(n)) return 'infinity';
+      if (n < 0) return 'negative ' + numToEn(-n);
 
-      // 5. Từ khóa giải toán
-      { category: 'keywords', catName: 'Từ khóa', sym: '📦', name: 'In total / Altogether', ipa: '/ɪn ˈtəʊ.təl/', boi: 'In thô-tồ', vi: 'Tổng cộng (Dấu hiệu: Cộng +)', example: 'How many pens in total?', bg: 'bg-emerald-50 text-emerald-700' },
-      { category: 'keywords', catName: 'Từ khóa', sym: '🍂', name: 'Left / Remaining', ipa: '/left/ - /rɪˈmeɪ.nɪŋ/', boi: 'Lép-t / Ri-mê-ninh', vi: 'Còn lại (Dấu hiệu: Trừ -)', example: 'How many apples are left?', bg: 'bg-rose-50 text-rose-700' },
-      { category: 'keywords', catName: 'Từ khóa', sym: '📈', name: 'More than', ipa: '/mɔːr ðæn/', boi: 'Mo đan', vi: 'Nhiều hơn', example: 'Alex has 3 more marbles than John.', bg: 'bg-sky-50 text-sky-700' },
-      { category: 'keywords', catName: 'Từ khóa', sym: '📉', name: 'Fewer than / Less than', ipa: '/ˈfjuː.ər ðæn/', boi: 'Fiu-ờ đan', vi: 'Ít hơn', example: 'He has 2 fewer candies.', bg: 'bg-orange-50 text-orange-700' },
-      { category: 'keywords', catName: 'Từ khóa', sym: '🍰', name: 'Share equally', ipa: '/ʃeər ˈiː.kwə.li/', boi: 'Se-ờ í-quờ-li', vi: 'Chia đều cho mỗi người (Dấu hiệu: Chia ÷)', example: 'Share 10 candies equally to 2 kids.', bg: 'bg-indigo-50 text-indigo-700' }
-    ];
+      const str = n.toString();
+      // Xử lý số thập phân (e.g. 3.5 -> "three point five")
+      if (str.includes('.')) {
+        const parts = str.split('.');
+        const intPart = parseInt(parts[0], 10);
+        const decPart = parts[1];
+        const intWords = numToEn(intPart);
+        const decWords = decPart.split('').map(d => digitToWord(d)).join(' ');
+        return `${intWords} point ${decWords}`;
+      }
 
-    let currentVocabFilter = 'all';
+      n = parseInt(n, 10);
+      if (n === 0) return 'zero';
+      if (n < 20) return onesWords[n];
+      if (n < 100) return tensWords[Math.floor(n / 10)] + (n % 10 !== 0 ? '-' + onesWords[n % 10] : '');
+      if (n < 1000) return onesWords[Math.floor(n / 100)] + ' hundred' + (n % 100 !== 0 ? ' and ' + numToEn(n % 100) : '');
+      if (n < 1000000) return numToEn(Math.floor(n / 1000)) + ' thousand' + (n % 1000 !== 0 ? ' ' + numToEn(n % 1000) : '');
+      return n.toLocaleString();
+    }
 
-    function renderVocabGrid(filter = 'all') {
-      currentVocabFilter = filter;
-      document.getElementById('count-all').innerText = allVocabData.length;
+    function updateCalcDisplay() {
+      document.getElementById('calc-result').innerText = calcInputStr;
+      if (calcCurrentOp !== null && calcVal1 !== null) {
+        document.getElementById('calc-expression').innerText = `${calcVal1} ${calcCurrentOp} ${calcJustEvaluated ? '' : calcInputStr}`;
+      }
+    }
 
-      const filtered = filter === 'all' 
-        ? allVocabData 
-        : allVocabData.filter(v => v.category === filter);
+    function calcNum(d) {
+      // Sửa lỗi: Nếu vừa bấm dấu =, bấm số mới sẽ bắt đầu phép tính mới tinh
+      if (calcJustEvaluated) {
+        calcVal1 = null;
+        calcVal2 = null;
+        calcCurrentOp = null;
+        calcInputStr = d.toString();
+        calcJustEvaluated = false;
+        document.getElementById('calc-expression').innerText = '';
+        document.getElementById('calc-sentence').innerText = '';
+        calcLastSentence = "";
+      } else {
+        if (calcInputStr === "0") {
+          calcInputStr = d.toString();
+        } else {
+          calcInputStr += d.toString();
+        }
+      }
+      updateCalcDisplay();
+      document.getElementById('calc-status-tag').innerText = "Typing";
+      document.getElementById('calc-status-tag').className = "text-amber-400 font-mono";
+    }
 
-      const grid = document.getElementById('vocab-grid');
-      grid.innerHTML = filtered.map(v => `
-        <div class="badge-pop bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-2xl w-12 h-12 rounded-2xl ${v.bg} flex items-center justify-center shadow-sm">${v.sym}</span>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500">${v.catName}</span>
-                <button onclick="speakText('${v.name.replace(/'/g, "\\'")}')" class="w-9 h-9 rounded-xl hover:bg-indigo-50 text-indigo-600 flex items-center justify-center transition" title="Nghe phát âm">
-                  <i class="fa-solid fa-volume-high"></i>
+    function calcDot() {
+      if (calcJustEvaluated) {
+        calcVal1 = null;
+        calcCurrentOp = null;
+        calcInputStr = "0.";
+        calcJustEvaluated = false;
+      } else if (!calcInputStr.includes('.')) {
+        calcInputStr += '.';
+      }
+      updateCalcDisplay();
+    }
+
+    function calcBackspace() {
+      if (calcJustEvaluated) return;
+      if (calcInputStr.length > 1) {
+        calcInputStr = calcInputStr.slice(0, -1);
+      } else {
+        calcInputStr = "0";
+      }
+      updateCalcDisplay();
+    }
+
+    function calcOp(op) {
+      const currentNumber = parseFloat(calcInputStr);
+      if (calcVal1 === null || calcJustEvaluated) {
+        calcVal1 = currentNumber;
+      } else if (calcCurrentOp !== null) {
+        // Thực hiện phép tính liên tiếp
+        calcVal2 = currentNumber;
+        executeCalculation(false);
+      }
+      calcCurrentOp = op;
+      calcInputStr = "0";
+      calcJustEvaluated = false;
+      document.getElementById('calc-expression').innerText = `${calcVal1} ${op}`;
+      document.getElementById('calc-status-tag').innerText = "Operator";
+      document.getElementById('calc-status-tag').className = "text-sky-400 font-mono";
+    }
+
+    function calcEqual() {
+      if (calcVal1 === null || calcCurrentOp === null) return;
+      calcVal2 = parseFloat(calcInputStr);
+      executeCalculation(true);
+    }
+
+    function executeCalculation(isFinal = true) {
+      let res = 0;
+      let opWord = "";
+      let isError = false;
+
+      if (calcCurrentOp === '+') { res = calcVal1 + calcVal2; opWord = "plus"; }
+      if (calcCurrentOp === '-') { res = calcVal1 - calcVal2; opWord = "minus"; }
+      if (calcCurrentOp === '*') { res = calcVal1 * calcVal2; opWord = "times"; }
+      if (calcCurrentOp === '/') {
+        // Sửa lỗi: Kiểm tra chia cho 0 và tính số thập phân chuẩn xác
+        if (calcVal2 === 0) {
+          isError = true;
+          opWord = "divided by";
+        } else {
+          // Tính thập phân chính xác, làm tròn tối đa 4 chữ số sau dấu phẩy
+          res = Math.round((calcVal1 / calcVal2) * 10000) / 10000;
+          opWord = "divided by";
+        }
+      }
+
+      if (isError) {
+        document.getElementById('calc-result').innerText = "Error (÷ 0)";
+        document.getElementById('calc-expression').innerText = `${calcVal1} ÷ 0 =`;
+        calcLastSentence = "Cannot divide by zero";
+        document.getElementById('calc-sentence').innerText = `"${calcLastSentence}"`;
+        document.getElementById('calc-status-tag').innerText = "Math Error";
+        document.getElementById('calc-status-tag').className = "text-rose-400 font-mono";
+        playErrorSound();
+        speakText("Error. Cannot divide by zero.");
+        calcVal1 = null;
+        calcVal2 = null;
+        calcCurrentOp = null;
+        calcInputStr = "0";
+        calcJustEvaluated = true;
+        return;
+      }
+
+      // Format số
+      document.getElementById('calc-result').innerText = res;
+      document.getElementById('calc-expression').innerText = `${calcVal1} ${calcCurrentOp} ${calcVal2} =`;
+
+      calcLastSentence = `${numToEn(calcVal1)} ${opWord} ${numToEn(calcVal2)} equals ${numToEn(res)}`;
+      document.getElementById('calc-sentence').innerText = `"${calcLastSentence}"`;
+      document.getElementById('calc-status-tag').innerText = "Completed";
+      document.getElementById('calc-status-tag').className = "text-emerald-400 font-mono";
+
+      if (isFinal) {
+        speakText(calcLastSentence);
+        playSuccessSound();
+      }
+
+      calcVal1 = res;
+      calcInputStr = res.toString();
+      calcVal2 = null;
+      calcCurrentOp = null;
+      calcJustEvaluated = true;
+    }
+
+    // Sửa lỗi: Nút C xóa sạch toàn bộ bao gồm cả câu phát âm và âm thanh đang nói
+    function calcClear() {
+      calcVal1 = null;
+      calcCurrentOp = null;
+      calcVal2 = null;
+      calcInputStr = "0";
+      calcLastSentence = "";
+      calcJustEvaluated = false;
+
+      // Hủy âm thanh ngay lập tức
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      document.getElementById('calc-result').innerText = '0';
+      document.getElementById('calc-expression').innerText = '';
+      document.getElementById('calc-sentence').innerText = '';
+      document.getElementById('calc-status-tag').innerText = "Cleared";
+      document.getElementById('calc-status-tag').className = "text-slate-400 font-mono";
+    }
+
+    function calcSpeak() {
+      if (calcLastSentence) {
+        speakText(calcLastSentence);
+      } else {
+        speakText("Please perform a calculation first.");
+      }
+    }
+
+    // ================= VOCABULARY VIEW CONTROLLER =================
+    let currentCategoryFilter = 'all';
+    let currentStatusFilter = 'all';
+    let currentSearchTerm = '';
+
+    function renderVocabGrid() {
+      const container = document.getElementById('vocab-grid');
+      let filtered = allVocabData;
+
+      // Filter by category
+      if (currentCategoryFilter !== 'all') {
+        filtered = filtered.filter(v => v.category === currentCategoryFilter);
+      }
+
+      // Filter by status (learned / unlearned)
+      if (currentStatusFilter === 'learned') {
+        filtered = filtered.filter(v => userProgress.masteredWords.has(v.name));
+      } else if (currentStatusFilter === 'unlearned') {
+        filtered = filtered.filter(v => !userProgress.masteredWords.has(v.name));
+      }
+
+      // Search term
+      if (currentSearchTerm.trim() !== '') {
+        const term = currentSearchTerm.toLowerCase();
+        filtered = filtered.filter(v => 
+          v.name.toLowerCase().includes(term) ||
+          v.vi.toLowerCase().includes(term) ||
+          v.boi.toLowerCase().includes(term) ||
+          v.ipa.toLowerCase().includes(term)
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400">
+            <div class="text-4xl mb-2">🔍</div>
+            <p class="font-bold text-slate-600">Không tìm thấy từ vựng phù hợp</p>
+            <p class="text-xs text-slate-400 mt-1">Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(v => {
+        const isMastered = userProgress.masteredWords.has(v.name);
+        return `
+          <div class="badge-pop bg-white p-5 rounded-3xl shadow-sm border ${isMastered ? 'border-emerald-300 ring-2 ring-emerald-500/10' : 'border-slate-100'} flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-2xl w-12 h-12 rounded-2xl ${v.bg} flex items-center justify-center shadow-sm">${v.sym}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500">${v.catName}</span>
+                  <button onclick="speakText('${v.name.replace(/'/g, "\\'")}')" class="w-9 h-9 rounded-xl hover:bg-indigo-50 text-indigo-600 flex items-center justify-center transition" title="Nghe phát âm">
+                    <i class="fa-solid fa-volume-high"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h4 class="text-lg font-bold text-slate-800">${v.name}</h4>
+                  <p class="text-xs text-slate-400 font-mono mt-0.5">${v.ipa}</p>
+                </div>
+                <button onclick="toggleWordMastery('${v.name.replace(/'/g, "\\'")}')" class="text-xs px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1 ${isMastered ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-slate-100 text-slate-500 hover:bg-emerald-50 hover:text-emerald-700'}" title="Đánh dấu đã thuộc">
+                  <i class="fa-solid ${isMastered ? 'fa-circle-check text-emerald-600' : 'fa-circle'}"></i>
+                  ${isMastered ? 'Đã thuộc' : 'Thuộc'}
+                </button>
+              </div>
+              <p class="text-xs text-indigo-600 font-bold mt-1">🗣️ Đọc: ${v.boi}</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100">
+              <p class="text-sm font-bold text-slate-700">${v.vi}</p>
+              <div class="mt-2 text-xs text-slate-500 italic bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
+                <span class="truncate mr-2">"${v.example}"</span>
+                <button onclick="speakText('${v.example.replace(/'/g, "\\'")}')" class="text-indigo-500 hover:text-indigo-700 flex-shrink-0" title="Nghe câu ví dụ">
+                  <i class="fa-solid fa-volume-high text-[11px]"></i>
                 </button>
               </div>
             </div>
-            <h4 class="text-lg font-bold text-slate-800">${v.name}</h4>
-            <p class="text-xs text-slate-400 font-mono mt-0.5">${v.ipa}</p>
-            <p class="text-xs text-indigo-600 font-bold mt-1">🗣️ Đọc: ${v.boi}</p>
           </div>
-
-          <div class="mt-4 pt-3 border-t border-slate-100">
-            <p class="text-sm font-bold text-slate-700">${v.vi}</p>
-            <div class="mt-2 text-xs text-slate-500 italic bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
-              <span>"${v.example}"</span>
-              <button onclick="speakText('${v.example.replace(/'/g, "\\'")}')" class="text-indigo-500 hover:text-indigo-700 ml-2" title="Nghe câu">
-                <i class="fa-solid fa-volume-high text-[11px]"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
-    function filterVocab(category) {
+    function toggleWordMastery(wordName) {
+      if (userProgress.masteredWords.has(wordName)) {
+        userProgress.masteredWords.delete(wordName);
+        if (userProgress.todayLearnedCount > 0) userProgress.todayLearnedCount--;
+      } else {
+        userProgress.masteredWords.add(wordName);
+        userProgress.todayLearnedCount++;
+        playSuccessSound();
+        triggerConfetti();
+      }
+      saveMasteredWords();
+      renderVocabGrid();
+      updateFlashcardView();
+    }
+
+    function handleVocabSearch() {
+      currentSearchTerm = document.getElementById('vocab-search').value;
+      renderVocabGrid();
+    }
+
+    function filterVocabCategory(cat) {
+      currentCategoryFilter = cat;
       document.querySelectorAll('.cat-pill').forEach(btn => {
-        if (btn.getAttribute('data-cat') === category) {
+        if (btn.getAttribute('data-cat') === cat) {
           btn.className = "cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white shadow-sm";
         } else {
           btn.className = "cat-pill px-4 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:border-indigo-400";
         }
       });
-      renderVocabGrid(category);
+      renderVocabGrid();
+    }
+
+    function filterVocabStatus(status) {
+      currentStatusFilter = status;
+      ['all', 'learned', 'unlearned'].forEach(s => {
+        const btn = document.getElementById(`status-${s}`);
+        if (s === status) {
+          btn.className = "status-pill px-3 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white shadow-sm";
+        } else {
+          btn.className = "status-pill px-3 py-1.5 text-xs font-bold rounded-xl bg-white text-slate-600 border border-slate-200 hover:bg-slate-50";
+        }
+      });
+      renderVocabGrid();
+    }
+
+    function updateVocabCounters() {
+      const total = allVocabData.length;
+      const learned = userProgress.masteredWords.size;
+      const unlearned = total - learned;
+
+      const cTotal = document.getElementById('count-total');
+      if (cTotal) cTotal.innerText = total;
+      const cAll = document.getElementById('count-all');
+      if (cAll) cAll.innerText = total;
+      const cLearned = document.getElementById('count-learned');
+      if (cLearned) cLearned.innerText = learned;
+      const cUnlearned = document.getElementById('count-unlearned');
+      if (cUnlearned) cUnlearned.innerText = unlearned;
     }
 
     // ================= FLASHCARD 3D CONTROLLER =================
     let flashcardList = [...allVocabData];
     let currentFcIndex = 0;
-    let learnedCards = new Set();
     let isFlipped = false;
+    let currentFlashcardMode = 'all';
 
     function initFlashcards() {
-      document.getElementById('fc-total').innerText = flashcardList.length;
+      setFlashcardMode('all');
+    }
+
+    function setFlashcardMode(mode) {
+      currentFlashcardMode = mode;
+      ['all', 'unlearned', 'weak'].forEach(m => {
+        const btn = document.getElementById(`fc-mode-${m}`);
+        if (m === mode) {
+          btn.className = "fc-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm";
+        } else {
+          btn.className = "fc-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-indigo-400";
+        }
+      });
+
+      if (mode === 'all') {
+        flashcardList = [...allVocabData];
+      } else if (mode === 'unlearned') {
+        flashcardList = allVocabData.filter(v => !userProgress.masteredWords.has(v.name));
+        if (flashcardList.length === 0) flashcardList = [...allVocabData];
+      } else if (mode === 'weak') {
+        flashcardList = allVocabData.filter(v => userProgress.weakTopics.has(v.name) || userProgress.weakTopics.has(v.catName));
+        if (flashcardList.length === 0) flashcardList = [...allVocabData];
+      }
+
+      currentFcIndex = 0;
+      updateFlashcardCounters();
       updateFlashcardView();
     }
 
+    function updateFlashcardCounters() {
+      const fcAll = document.getElementById('fc-count-all');
+      if (fcAll) fcAll.innerText = allVocabData.length;
+      const fcUnlearned = document.getElementById('fc-count-unlearned');
+      if (fcUnlearned) fcUnlearned.innerText = allVocabData.length - userProgress.masteredWords.size;
+      const fcWeak = document.getElementById('fc-count-weak');
+      if (fcWeak) fcWeak.innerText = userProgress.weakTopics.size;
+    }
+
     function updateFlashcardView() {
+      if (flashcardList.length === 0) return;
       const card = flashcardList[currentFcIndex];
       const fcElem = document.getElementById('flashcard-element');
       fcElem.classList.remove('flipped');
       isFlipped = false;
 
+      document.getElementById('fc-total').innerText = flashcardList.length;
       document.getElementById('fc-current-idx').innerText = currentFcIndex + 1;
       document.getElementById('fc-progress-bar').style.width = `${((currentFcIndex + 1) / flashcardList.length) * 100}%`;
       document.getElementById('fc-badge-cat').innerText = card.catName;
@@ -554,14 +1683,14 @@
 
       // Status button
       const markBtn = document.getElementById('btn-mark-learned');
-      if (learnedCards.has(card.name)) {
-        markBtn.className = "py-3 px-5 bg-emerald-600 text-white font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm";
+      if (userProgress.masteredWords.has(card.name)) {
+        markBtn.className = "py-3 px-5 bg-emerald-600 text-white font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm text-sm";
         markBtn.innerHTML = '<i class="fa-solid fa-check-double"></i> Đã thuộc';
       } else {
-        markBtn.className = "py-3 px-5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm";
+        markBtn.className = "py-3 px-5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm text-sm";
         markBtn.innerHTML = '<i class="fa-solid fa-check"></i> Đánh dấu đã thuộc';
       }
-      document.getElementById('fc-learned-count').innerText = `Đã ghi nhớ: ${learnedCards.size} / ${flashcardList.length}`;
+      document.getElementById('fc-learned-count').innerText = `Đã ghi nhớ: ${userProgress.masteredWords.size} / ${allVocabData.length}`;
     }
 
     function flipCurrentCard() {
@@ -590,14 +1719,7 @@
 
     function markCardLearned() {
       const card = flashcardList[currentFcIndex];
-      if (learnedCards.has(card.name)) {
-        learnedCards.delete(card.name);
-      } else {
-        learnedCards.add(card.name);
-        playSuccessSound();
-        triggerConfetti();
-      }
-      updateFlashcardView();
+      toggleWordMastery(card.name);
     }
 
     function shuffleFlashcards() {
@@ -609,139 +1731,12 @@
       updateFlashcardView();
     }
 
-    // ================= BÀN TÍNH NÓI TIẾNG ANH =================
-    let calcVal1 = null;
-    let calcCurrentOp = null;
-    let calcVal2 = null;
-    let calcLastSentence = "";
-
-    const onesWords = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
-      'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-    const tensWords = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-
-    function numToEn(n) {
-      if (n === 0) return 'zero';
-      if (n < 0) return 'negative ' + numToEn(-n);
-      if (n < 20) return onesWords[n];
-      if (n < 100) return tensWords[Math.floor(n / 10)] + (n % 10 !== 0 ? '-' + onesWords[n % 10] : '');
-      if (n < 1000) return onesWords[Math.floor(n / 100)] + ' hundred' + (n % 100 !== 0 ? ' and ' + numToEn(n % 100) : '');
-      return n.toString();
+    function reviewWeakWordsInFlashcards() {
+      switchTab('flashcard');
+      setFlashcardMode('weak');
     }
 
-    function calcNum(d) {
-      if (calcCurrentOp === null) {
-        calcVal1 = (calcVal1 === null) ? d : calcVal1 * 10 + d;
-        document.getElementById('calc-result').innerText = calcVal1;
-        document.getElementById('calc-expression').innerText = `${calcVal1}`;
-      } else {
-        calcVal2 = (calcVal2 === null) ? d : calcVal2 * 10 + d;
-        document.getElementById('calc-result').innerText = calcVal2;
-        document.getElementById('calc-expression').innerText = `${calcVal1} ${calcCurrentOp} ${calcVal2}`;
-      }
-    }
-
-    function calcOp(op) {
-      if (calcVal1 === null) calcVal1 = 0;
-      calcCurrentOp = op;
-      document.getElementById('calc-expression').innerText = `${calcVal1} ${op}`;
-      document.getElementById('calc-result').innerText = '0';
-    }
-
-    function calcClear() {
-      calcVal1 = null;
-      calcCurrentOp = null;
-      calcVal2 = null;
-      document.getElementById('calc-result').innerText = '0';
-      document.getElementById('calc-expression').innerText = '';
-      document.getElementById('calc-sentence').innerText = '';
-    }
-
-    function calcEqual() {
-      if (calcVal1 === null || calcCurrentOp === null || calcVal2 === null) return;
-      let res = 0;
-      let opWord = "";
-      if (calcCurrentOp === '+') { res = calcVal1 + calcVal2; opWord = "plus"; }
-      if (calcCurrentOp === '-') { res = calcVal1 - calcVal2; opWord = "minus"; }
-      if (calcCurrentOp === '*') { res = calcVal1 * calcVal2; opWord = "times"; }
-      if (calcCurrentOp === '/') { 
-        res = calcVal2 !== 0 ? Math.floor(calcVal1 / calcVal2) : 0; 
-        opWord = "divided by"; 
-      }
-
-      document.getElementById('calc-result').innerText = res;
-      document.getElementById('calc-expression').innerText = `${calcVal1} ${calcCurrentOp} ${calcVal2} =`;
-
-      calcLastSentence = `${numToEn(calcVal1)} ${opWord} ${numToEn(calcVal2)} equals ${numToEn(res)}`;
-      document.getElementById('calc-sentence').innerText = `"${calcLastSentence}"`;
-      speakText(calcLastSentence);
-      playSuccessSound();
-      calcVal1 = res;
-      calcVal2 = null;
-      calcCurrentOp = null;
-    }
-
-    function calcSpeak() {
-      if (calcLastSentence) speakText(calcLastSentence);
-    }
-
-    // ================= BÀI TOÁN ĐỐ NÂNG CẤP =================
-    const problemsData = [
-      {
-        type: "basic",
-        title: "Bài 1: Phép cộng (Addition)",
-        en: "Anna has 3 apples. Tom gives her 2 more apples. How many apples does Anna have altogether?",
-        vi: "Anna có 3 quả táo. Tom cho cô ấy thêm 2 quả nữa. Hỏi Anna có tất cả bao nhiêu quả táo?",
-        keyword: "altogether (tất cả lại) ➔ Phép cộng (+)",
-        calc: "3 + 2 = 5",
-        answer: "Anna has 5 apples."
-      },
-      {
-        type: "basic",
-        title: "Bài 2: Phép trừ (Subtraction)",
-        en: "There are 10 birds on a tree. 4 birds fly away. How many birds are left?",
-        vi: "Có 10 con chim trên cây. 4 con bay đi mất. Hỏi còn lại bao nhiêu con chim?",
-        keyword: "left (còn lại) ➔ Phép trừ (-)",
-        calc: "10 - 4 = 6",
-        answer: "There are 6 birds left."
-      },
-      {
-        type: "geometry",
-        title: "Bài 3: Chu vi hình vuông (Perimeter of a square)",
-        en: "A square has a side length of 5 cm. What is the perimeter of the square?",
-        vi: "Một hình vuông có cạnh dài 5 cm. Chu vi của hình vuông đó là bao nhiêu?",
-        keyword: "Perimeter of square = side × 4 ➔ Chu vi = cạnh × 4",
-        calc: "5 × 4 = 20 cm",
-        answer: "The perimeter is 20 centimeters."
-      },
-      {
-        type: "geometry",
-        title: "Bài 4: Diện tích hình chữ nhật (Area of a rectangle)",
-        en: "A rectangle has a length of 6 meters and a width of 3 meters. Find its area.",
-        vi: "Một hình chữ nhật có chiều dài 6 mét và chiều rộng 3 mét. Hãy tính diện tích.",
-        keyword: "Area = length × width ➔ Diện tích = dài × rộng",
-        calc: "6 × 3 = 18 m²",
-        answer: "The area is 18 square meters."
-      },
-      {
-        type: "fractions",
-        title: "Bài 5: Phân số (Fractions)",
-        en: "A pizza has 8 slices. John eats one quarter of the pizza. How many slices does he eat?",
-        vi: "Một chiếc bánh pizza có 8 miếng. John ăn một phần tư chiếc bánh. Hỏi anh ấy ăn mấy miếng?",
-        keyword: "one quarter (1/4) ➔ Lấy 8 chia cho 4",
-        calc: "8 ÷ 4 = 2",
-        answer: "John eats 2 slices."
-      },
-      {
-        type: "fractions",
-        title: "Bài 6: Đo lường & Chia đều (Measurement & Division)",
-        en: "A water tank contains 15 liters. It is poured equally into 3 jugs. How many liters in each jug?",
-        vi: "Bình chứa 15 lít nước. Đổ đều vào 3 cái ca. Hỏi mỗi ca có bao nhiêu lít nước?",
-        keyword: "poured equally (chia đều) ➔ Phép chia (÷)",
-        calc: "15 ÷ 3 = 5 liters",
-        answer: "Each jug contains 5 liters."
-      }
-    ];
-
+    // ================= BÀI TOÁN ĐỐ NÂNG CẤP CONTROLLER =================
     function renderProblems(filterType = 'all') {
       const container = document.getElementById('problems-container');
       const filtered = filterType === 'all' 
@@ -753,19 +1748,24 @@
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-bold px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full">${p.title}</span>
-              <button onclick="speakText('${p.en.replace(/'/g, "\\'")}')" class="text-indigo-600 hover:text-indigo-800 p-2" title="Nghe đề bài">
+              <button onclick="speakText('${p.en.replace(/'/g, "\\'")}')" class="text-indigo-600 hover:text-indigo-800 p-2" title="Nghe đề bài tiếng Anh">
                 <i class="fa-solid fa-volume-high"></i>
               </button>
             </div>
             <p class="text-base font-bold text-slate-800 mb-2 leading-relaxed">"${p.en}"</p>
             <p class="text-sm text-slate-500 mb-4 italic">${p.vi}</p>
-            <div class="bg-amber-50 border border-amber-200 text-amber-800 text-xs p-3 rounded-xl mb-4 font-semibold">
+            <div class="bg-amber-50 border border-amber-200 text-amber-900 text-xs p-3 rounded-2xl mb-4 font-semibold">
               🔑 ${p.keyword}
             </div>
           </div>
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span class="font-mono font-bold text-base text-slate-700">${p.calc}</span>
-            <span class="text-sm font-bold text-emerald-600">➔ ${p.answer}</span>
+            <span class="text-sm font-bold text-emerald-600 flex items-center gap-1">
+              ➔ ${p.answer}
+              <button onclick="speakText('${p.answer.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-indigo-600 ml-1.5" title="Nghe đáp án">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+              </button>
+            </span>
           </div>
         </div>
       `).join('');
@@ -782,76 +1782,37 @@
       renderProblems(type);
     }
 
-    // ================= BỘ CÂU HỎI QUIZ & CONFETTI =================
-    const quizData = [
-      {
-        en: "Minh has 5 books. He buys 2 more books. How many books does he have altogether?",
-        vi: "Minh có 5 quyển sách. Bạn ấy mua thêm 2 quyển nữa. Hỏi bạn ấy có tất cả bao nhiêu quyển sách?",
-        options: [
-          { text: "5 - 2 = 3 books", correct: false, explain: "Sai rồi. Từ 'altogether' (tất cả gộp lại) là dấu hiệu của phép cộng." },
-          { text: "5 + 2 = 7 books", correct: true, explain: "Chính xác! 'altogether' nghĩa là cộng lại: 5 + 2 = 7." },
-          { text: "5 × 2 = 10 books", correct: false, explain: "Sai rồi. Mua thêm chứ không phải gấp đôi." }
-        ]
-      },
-      {
-        en: "A square has four sides. Each side is 6 cm. What is the perimeter?",
-        vi: "Một hình vuông có 4 cạnh. Mỗi cạnh dài 6 cm. Chu vi của hình vuông là bao nhiêu?",
-        options: [
-          { text: "6 + 4 = 10 cm", correct: false, explain: "Sai rồi. Chu vi hình vuông bằng cạnh nhân 4." },
-          { text: "6 × 4 = 24 cm", correct: true, explain: "Xuất sắc! Perimeter = side × 4 = 6 × 4 = 24 cm." },
-          { text: "6 × 6 = 36 cm", correct: false, explain: "36 cm² là diện tích (Area), còn chu vi (Perimeter) là 24 cm." }
-        ]
-      },
-      {
-        en: "There are 12 cars in the parking lot. 5 cars leave. How many cars remain?",
-        vi: "Có 12 chiếc ô tô trong bãi đỗ xe. 5 chiếc rời đi. Hỏi còn lại bao nhiêu chiếc ô tô?",
-        options: [
-          { text: "12 + 5 = 17 cars", correct: false, explain: "Sai rồi. Ô tô rời đi thì số lượng phải bớt đi." },
-          { text: "12 - 5 = 7 cars", correct: true, explain: "Rất giỏi! 'Remain' (còn lại) chính là phép trừ: 12 - 5 = 7." },
-          { text: "12 ÷ 5 = 2 cars", correct: false, explain: "Sai rồi, đây không phải bài toán chia đều." }
-        ]
-      },
-      {
-        en: "What is 'one half' of 20?",
-        vi: "Một nửa (1/2) của số 20 là bao nhiêu?",
-        options: [
-          { text: "10", correct: true, explain: "Chính xác! 'One half' là 1/2, lấy 20 chia cho 2 bằng 10." },
-          { text: "5", correct: false, explain: "Sai rồi. 5 là một phần tư (one quarter) của 20." },
-          { text: "40", correct: false, explain: "Sai rồi. 40 là gấp đôi (double) số 20." }
-        ]
-      },
-      {
-        en: "How many sides does a triangle have?",
-        vi: "Hình tam giác có bao nhiêu cạnh?",
-        options: [
-          { text: "Four sides", correct: false, explain: "Sai rồi. 4 cạnh là hình vuông hoặc chữ nhật." },
-          { text: "Three sides", correct: true, explain: "Chính xác! 'Triangle' (tri = 3) có đúng 3 cạnh và 3 góc." },
-          { text: "Zero sides", correct: false, explain: "Hình tròn mới không có cạnh góc." }
-        ]
-      },
-      {
-        en: "Mom shares 15 candies equally among 3 children. How many candies does each child get?",
-        vi: "Mẹ chia đều 15 cái kẹo cho 3 đứa trẻ. Hỏi mỗi bạn nhận được bao nhiêu cái?",
-        options: [
-          { text: "15 - 3 = 12 candies", correct: false, explain: "Chia đều cơ mà, không phải trừ đi đâu nhé!" },
-          { text: "15 ÷ 3 = 5 candies", correct: true, explain: "Tuyệt đỉnh! 'shares equally' (chia đều) ➔ 15 ÷ 3 = 5 cái kẹo." },
-          { text: "15 × 3 = 45 candies", correct: false, explain: "Sai rồi, không thể nhân lên được." }
-        ]
-      }
-    ];
-
+    // ================= QUIZ CONTROLLER (RANDOMIZED 10 CÂU & TRACKING) =================
+    let currentQuizPool = [];
     let currentQuizIndex = 0;
     let quizScore = 0;
     let currentQuizQuestionText = "";
+    const QUIZ_SESSION_LENGTH = 10;
+
+    function initQuizSession() {
+      // Xáo trộn và chọn 10 câu ngẫu nhiên từ kho 15 câu
+      const shuffled = [...allQuizQuestions].sort(() => 0.5 - Math.random());
+      currentQuizPool = shuffled.slice(0, Math.min(QUIZ_SESSION_LENGTH, shuffled.length));
+      currentQuizIndex = 0;
+      quizScore = 0;
+      document.getElementById('quiz-score').innerText = `⭐ Điểm: ${quizScore}`;
+      loadQuizQuestion();
+    }
 
     function loadQuizQuestion() {
-      const q = quizData[currentQuizIndex];
+      const q = currentQuizPool[currentQuizIndex];
       currentQuizQuestionText = q.en;
-      document.getElementById('quiz-progress').innerText = `Câu hỏi ${currentQuizIndex + 1} / ${quizData.length}`;
+      document.getElementById('quiz-progress').innerText = `Câu hỏi ${currentQuizIndex + 1} / ${currentQuizPool.length}`;
       document.getElementById('quiz-question-en').innerText = q.en;
       document.getElementById('quiz-question-vi').innerText = q.vi;
       document.getElementById('quiz-feedback').classList.add('hidden');
       document.getElementById('quiz-next-btn').classList.add('hidden');
+
+      // Update session accuracy
+      const pct = userProgress.totalAnswered > 0 
+        ? Math.round((userProgress.totalCorrect / userProgress.totalAnswered) * 100) 
+        : 100;
+      document.getElementById('quiz-accuracy-badge').innerText = `🎯 Độ chính xác: ${pct}%`;
 
       const optContainer = document.getElementById('quiz-options');
       optContainer.innerHTML = q.options.map((opt, i) => `
@@ -863,18 +1824,26 @@
     }
 
     function checkQuizAnswer(optIndex) {
-      const q = quizData[currentQuizIndex];
+      const q = currentQuizPool[currentQuizIndex];
       const selected = q.options[optIndex];
       const feedback = document.getElementById('quiz-feedback');
       const nextBtn = document.getElementById('quiz-next-btn');
 
       document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
 
+      userProgress.totalAnswered++;
+
       feedback.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
       feedback.classList.add('border');
 
       if (selected.correct) {
+        userProgress.totalCorrect++;
         quizScore += 10;
+        if (quizScore > userProgress.highestScore) {
+          userProgress.highestScore = quizScore;
+        }
+
+        // Nếu trước đó câu này từng sai, có thể bỏ bớt khỏi weak topics nếu cần
         document.getElementById('quiz-score').innerText = `⭐ Điểm: ${quizScore}`;
         feedback.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200');
         feedback.innerHTML = `
@@ -890,6 +1859,12 @@
         triggerConfetti();
         speakText("Awesome! That is correct.");
       } else {
+        // Ghi nhận chủ đề yếu / từ sai vào cá nhân hóa
+        if (q.topic) {
+          userProgress.weakTopics.add(q.topic);
+          saveWeakTopics();
+        }
+
         feedback.classList.add('bg-rose-50', 'text-rose-800', 'border-rose-200');
         feedback.innerHTML = `
           <div class="flex items-start gap-3">
@@ -897,36 +1872,41 @@
             <div>
               <strong class="text-rose-900">Chưa chính xác:</strong>
               <p class="text-sm mt-1">${selected.explain}</p>
+              <p class="text-xs text-rose-600 mt-2 font-bold">➔ Khái niệm "${q.topic}" đã được lưu vào mục "Từ cần ôn tập".</p>
             </div>
           </div>
         `;
         playErrorSound();
       }
 
+      saveStatsData();
       nextBtn.classList.remove('hidden');
     }
 
     function nextQuizQuestion() {
       currentQuizIndex++;
-      if (currentQuizIndex < quizData.length) {
+      if (currentQuizIndex < currentQuizPool.length) {
         loadQuizQuestion();
       } else {
         triggerMegaConfetti();
-        const maxScore = quizData.length * 10;
+        const maxScore = currentQuizPool.length * 10;
         const isPerfect = quizScore === maxScore;
 
         document.getElementById('quiz-box').innerHTML = `
           <div class="text-center py-8">
             <div class="text-6xl mb-4 animate-bounce">${isPerfect ? '👑' : '🏆'}</div>
             <h3 class="text-2xl font-black text-slate-800 mb-2">Chúc Mừng Bạn Đã Hoàn Thành Thử Thách!</h3>
-            <p class="text-base text-slate-500 mb-4">Bạn vừa hoàn thành xuất sắc các bài tập toán tiếng Anh cơ bản.</p>
+            <p class="text-base text-slate-500 mb-4">Kết quả và độ chính xác của bạn đã được ghi nhớ vào hệ thống cá nhân hóa.</p>
             <div class="inline-block bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 px-6 py-4 rounded-3xl mb-6">
-              <span class="text-xs uppercase font-bold tracking-wider text-slate-500 block">Tổng Điểm Của Bạn</span>
+              <span class="text-xs uppercase font-bold tracking-wider text-slate-500 block">Tổng Điểm Phiên Này</span>
               <span class="text-4xl font-black text-indigo-600">${quizScore} / ${maxScore}</span>
             </div>
-            <div>
-              <button onclick="location.reload()" class="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-600/30 hover:scale-105 transition">
-                <i class="fa-solid fa-rotate-right mr-2"></i> Luyện tập lại từ đầu
+            <div class="flex justify-center gap-3 flex-wrap">
+              <button onclick="initQuizSession()" class="px-7 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-600/30 hover:scale-105 transition text-sm">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Làm bộ câu hỏi mới
+              </button>
+              <button onclick="switchTab('dashboard')" class="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition text-sm">
+                <i class="fa-solid fa-chart-pie mr-2"></i> Xem thống kê chi tiết
               </button>
             </div>
           </div>
@@ -934,12 +1914,92 @@
       }
     }
 
-    // ================= KHỞI TẠO =================
+    // ================= DASHBOARD & CÁ NHÂN HÓA CONTROLLER =================
+    function updateDashboardUI() {
+      // Streak
+      const streakEl = document.getElementById('dash-streak');
+      if (streakEl) streakEl.innerText = `${userProgress.streak} ngày`;
+      const bannerStreak = document.getElementById('banner-streak-count');
+      if (bannerStreak) bannerStreak.innerText = `${userProgress.streak} ngày`;
+
+      // Mastered words
+      const totalWords = allVocabData.length;
+      const masteredCount = userProgress.masteredWords.size;
+      const pct = Math.round((masteredCount / totalWords) * 100);
+      const dashMastered = document.getElementById('dash-mastered');
+      if (dashMastered) dashMastered.innerText = `${masteredCount} / ${totalWords}`;
+      const dashMasteredPct = document.getElementById('dash-mastered-pct');
+      if (dashMasteredPct) dashMasteredPct.innerText = `Đạt ${pct}% tổng kho từ`;
+
+      // Quiz accuracy
+      const accuracyPct = userProgress.totalAnswered > 0
+        ? Math.round((userProgress.totalCorrect / userProgress.totalAnswered) * 100)
+        : 0;
+      const dashAccuracy = document.getElementById('dash-accuracy');
+      if (dashAccuracy) dashAccuracy.innerText = `${accuracyPct}%`;
+      const dashQuizCounts = document.getElementById('dash-quiz-counts');
+      if (dashQuizCounts) dashQuizCounts.innerText = `Đúng ${userProgress.totalCorrect} / ${userProgress.totalAnswered} câu đã làm`;
+
+      // High score
+      const dashHighScore = document.getElementById('dash-high-score');
+      if (dashHighScore) dashHighScore.innerText = `${userProgress.highestScore} điểm`;
+
+      // Daily goal
+      const goalSelect = document.getElementById('goal-select');
+      if (goalSelect) goalSelect.value = userProgress.dailyTarget;
+      const goalProgressText = document.getElementById('goal-progress-text');
+      if (goalProgressText) goalProgressText.innerText = `${userProgress.todayLearnedCount} / ${userProgress.dailyTarget} từ`;
+      const bannerGoal = document.getElementById('banner-goal-progress');
+      if (bannerGoal) bannerGoal.innerText = `${userProgress.todayLearnedCount}/${userProgress.dailyTarget} từ`;
+
+      const goalPct = Math.min(100, Math.round((userProgress.todayLearnedCount / userProgress.dailyTarget) * 100));
+      const goalBar = document.getElementById('goal-progress-bar');
+      if (goalBar) goalBar.style.width = `${goalPct}%`;
+
+      // Weak topics / Mistakes list
+      const weakBadge = document.getElementById('weak-count-badge');
+      if (weakBadge) weakBadge.innerText = `${userProgress.weakTopics.size} khái niệm`;
+      const weakList = document.getElementById('weak-words-list');
+      if (weakList) {
+        if (userProgress.weakTopics.size === 0) {
+          weakList.innerHTML = `<p class="text-xs text-slate-400 italic">Chưa có chủ đề nào bị sai. Hãy tiếp tục duy trì nhé!</p>`;
+        } else {
+          weakList.innerHTML = [...userProgress.weakTopics].map(topic => `
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">
+              <span>⚠️ ${topic}</span>
+              <button onclick="removeWeakTopic('${topic}')" class="text-rose-400 hover:text-rose-600 ml-1" title="Xóa khỏi danh sách yếu">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </span>
+          `).join('');
+        }
+      }
+
+      updateFlashcardCounters();
+    }
+
+    function changeDailyGoalTarget(val) {
+      userProgress.dailyTarget = parseInt(val, 10);
+      saveGoalData();
+      updateDashboardUI();
+    }
+
+    function removeWeakTopic(topic) {
+      userProgress.weakTopics.delete(topic);
+      saveWeakTopics();
+      updateDashboardUI();
+    }
+
+    // ================= KHỞI TẠO ỨNG DỤNG =================
     window.onload = function() {
-      renderVocabGrid('all');
+      loadUserProgress();
+      initSpeechSynthesis();
+      renderVocabGrid();
+      updateVocabCounters();
       initFlashcards();
       renderProblems('all');
-      loadQuizQuestion();
+      initQuizSession();
+      updateDashboardUI();
     };
   </script>
 </body>
